@@ -15,9 +15,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Product {
     @Id
     private ObjectId id;
-    private String name;
+    private String productName;
+    private String productPrice;
+    private String productDescription;
 
-    public Product(String name) {
-        this.name = name;
+
+    public Product(String name, String productPrice, String productDescription) {
+        this.productName = name;
+        this.productPrice = productPrice;
+        this.productDescription = productDescription;
     }
 }

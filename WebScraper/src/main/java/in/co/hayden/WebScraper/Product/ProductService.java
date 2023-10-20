@@ -14,23 +14,23 @@ public class ProductService {
     public List<Product> allProduct(){
         return productRepository.findAll();
     }
-    public Product insertProduct(String name){
-        Product newentry = new Product(name);
+    public Product insertProduct(String name, String productPrice, String productDescription){
+        Product newentry = new Product(name, productPrice, productDescription);
         productRepository.insert(newentry);
         return newentry;
     }
 
         public Optional<Product> findbyname(String name){
-         return productRepository.findProductByName(name);
+         return productRepository.findProductByProductName(name);
     }
 
     public Optional<Product> deleteProduct(String name){
-        return productRepository.deleteProductByname(name);
+        return productRepository.deleteProductByProductName(name);
     }
 
     public Product updateProductName(String name, String newName){
-    Product temp = productRepository.findProductByName(name).get();
-    temp.setName(newName);
+    Product temp = productRepository.findProductByProductName(name).get();
+    temp.setProductName(newName);
     return productRepository.save(temp);
     }
 
