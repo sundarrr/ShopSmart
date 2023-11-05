@@ -55,6 +55,7 @@ function App() {
           productSellingPrice={product.productSellingPrice}
           productComparisonDetails={product.productComparisonDetails}
           productThumbnail={product.productThumbnail}
+          productURL={product.productURL}
         />
       ))}
     </div>
