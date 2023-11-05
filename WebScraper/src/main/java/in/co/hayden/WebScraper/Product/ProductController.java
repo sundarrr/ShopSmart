@@ -13,21 +13,18 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173") // Replace with the actual origin of your React app
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProductController {
      @Autowired
      private ProductService productService;
     @PostMapping("/insertdata")
     public ResponseEntity<Product> addProductsToDatabase(@RequestBody Product[] products) {
-
         for(Product p: products)
         {
             productService.insertProduct(p);
             System.out.println(p);
         }
-
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 
      @GetMapping("/")
