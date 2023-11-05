@@ -45,6 +45,25 @@ function App() {
     fetchData();
   }, []);
 
+  function updateSearchTerm(searchTerm){
+    try {
+      const response = fetch('http://localhost:8080/searchCount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(searchTerm),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      console.log('Search count incremented successfully!');
+    } catch (error) {
+      console.error('Error incrementing search count:', error.message);
+    }
+  }
   useEffect(() => {
     try {
       if(searchValue != ""){
@@ -52,8 +71,10 @@ function App() {
         const filtered = products.filter(product =>
             product.productName.toLowerCase().includes(searchValue.toLowerCase())
         );
-        console.log(filtered)
+        // console.log(filtered)
+        updateSearchTerm(searchValue);
         setFilteredProducts(filtered);
+
       }
       else{
         setFilteredProducts(products);
@@ -65,8 +86,24 @@ function App() {
 
 
   useEffect(() => {
+    const getSearchTerms = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/topSearchTerms');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
 
-  },[])
+        const data = await response.json();
+        console.log(data)
+        settopSearchItems(data)
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    getSearchTerms();
+  },[searchValue])
   
   const handleSearchChange = (_, newValue) => {
     setSearchValue(newValue);
@@ -96,8 +133,8 @@ function App() {
       <div style={{margin:10}}>
       {topSearchItems.map((searchedItem) =>
       <Chip 
-      avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{100}</Avatar>}
-      label="Apples" variant="outlined" onClick={()=> setSearchValue("apples")} style={{margin:2}}/>
+      avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
+      label={searchedItem.searchTerm} variant="outlined" onClick={()=> setSearchValue(searchedItem.searchTerm)} style={{margin:2}}/>
       )}
       
       </div>
