@@ -19,11 +19,13 @@ public class Product {
     String productSellingPrice;
     String productThumbnail;
     String productComparisonDetails;
+    String productURL;
 
-    public Product(String productName, String productSellingPrice, String productThumbnail, String productComparisonDetails) {
+    public Product(String productName, String productSellingPrice, String productThumbnail, String productComparisonDetails, String productURL) {
         this.productName = productName;
         this.productSellingPrice = productSellingPrice;
         this.productThumbnail = productThumbnail;
         this.productComparisonDetails = productComparisonDetails;
+        this.productURL = productURL;
     }
 }
