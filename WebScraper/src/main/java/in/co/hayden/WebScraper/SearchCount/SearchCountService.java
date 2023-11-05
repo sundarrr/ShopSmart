@@ -14,6 +14,13 @@ public class SearchCountService {
     private SearchCountRepository searchCountRepository;
 
     public List<SearchCount> allSearchCounts(){
+        List<SearchCount> searchCounts = searchCountRepository.findAll();
+        System.out.println(searchCounts);
+        return searchCountRepository.findAll();
+    }
+
+    public List<SearchCount> topSearch()
+    {
         return searchCountRepository.findAll();
     }
 
