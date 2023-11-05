@@ -8,6 +8,9 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import CustomCard from './components/CustomCard'
 import './App.css'
 import Autocomplete from '@mui/material/Autocomplete';
+import Fab from '@mui/material/Fab';
+import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
 
 import TextField from '@mui/material/TextField';
 
@@ -18,6 +21,7 @@ function App() {
   const [error, setError] = useState(null);
   const [searchValue, setSearchValue] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,6 +63,11 @@ function App() {
     }
   }, [searchValue, products]);
 
+
+  useEffect(() => {
+
+  },[])
+  
   const handleSearchChange = (_, newValue) => {
     setSearchValue(newValue);
   };
@@ -74,6 +83,7 @@ function App() {
   return (
     <>
       <Autocomplete
+        style={{backgroundColor: 'white', margin:10}}
         value={searchValue}
         onChange={handleSearchChange}
         // options={products.map(product => product.productName)}
@@ -82,6 +92,15 @@ function App() {
           <TextField {...params} label="Search for a product..." />
         )}
       />
+
+      <div style={{margin:10}}>
+      {topSearchItems.map((searchedItem) =>
+      <Chip 
+      avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{100}</Avatar>}
+      label="Apples" variant="outlined" onClick={()=> setSearchValue("apples")} style={{margin:2}}/>
+      )}
+      
+      </div>
     <div  style={{ display:'flex',flexWrap: 'wrap'}}>
       {filteredProducts.map((product) => (
         <CustomCard
