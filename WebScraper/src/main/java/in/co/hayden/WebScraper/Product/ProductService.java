@@ -14,13 +14,12 @@ public class ProductService {
     public List<Product> allProduct(){
         return productRepository.findAll();
     }
-    public Product insertProduct(String name, String productPrice, String productDescription){
-        Product newentry = new Product(name, productPrice, productDescription);
-        productRepository.insert(newentry);
-        return newentry;
+    public Product insertProduct(Product p){
+        productRepository.insert(p);
+        return p;
     }
 
-        public Optional<Product> findbyname(String name){
+    public Optional<Product> findbyname(String name){
          return productRepository.findProductByProductName(name);
     }
 

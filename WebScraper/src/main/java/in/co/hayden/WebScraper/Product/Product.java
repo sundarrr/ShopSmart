@@ -11,18 +11,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-@Document(collection = "product")
+@Document(collection = "products")
 public class Product {
     @Id
     private ObjectId id;
-    private String productName;
-    private String productPrice;
-    private String productDescription;
+    String productName;
+    String productSellingPrice;
+    String productThumbnail;
+    String productComparisonDetails;
 
-
-    public Product(String name, String productPrice, String productDescription) {
-        this.productName = name;
-        this.productPrice = productPrice;
-        this.productDescription = productDescription;
+    public Product(String productName, String productSellingPrice, String productThumbnail, String productComparisonDetails) {
+        this.productName = productName;
+        this.productSellingPrice = productSellingPrice;
+        this.productThumbnail = productThumbnail;
+        this.productComparisonDetails = productComparisonDetails;
     }
 }

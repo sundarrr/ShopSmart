@@ -14,25 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 import java.rmi.ServerException;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 public class ProductController {
+     @Autowired
+     private ProductService productService;
+    @PostMapping("/insertdata")
+    public ResponseEntity<Product> addProductsToDatabase(@RequestBody Product[] products) {
 
-    @PostMapping("/registration")
-    public ResponseEntity<Product> test2(@RequestBody Product userP) {
-        
-        // Product product = product.save(newUser);
-        // if (user == null) {
-        //     throw new ServerException();
-        // } else {
-            System.out.println("ASDF");            System.out.println("ASDF");
-            System.out.println("ASDF");
-            System.out.println("ASDF");
-            System.out.println("ASDF");
+        for(Product p: products)
+        {
+            productService.insertProduct(p);
+            System.out.println(p);
+        }
 
-            System.out.println(userP);
-            return new ResponseEntity<>( HttpStatus.CREATED);
-        // }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 
     
