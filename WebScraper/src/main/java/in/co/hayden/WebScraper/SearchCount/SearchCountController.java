@@ -17,8 +17,9 @@ public class SearchCountController {
     private SearchCountService searchCountService;
     @PostMapping("/searchCount")
     public ResponseEntity<Product> incrementSearchCount(@RequestBody String searchTerm) {
-        searchCountService.insertSearchCount(searchTerm);
-        System.out.println((searchTerm));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        String searchTermWithoutQuotes = searchTerm.replace("\"", "");
+        searchCountService.insertSearchCount(searchTermWithoutQuotes);
+        System.out.println((searchTermWithoutQuotes));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

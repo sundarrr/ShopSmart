@@ -18,11 +18,20 @@ public class SearchCountService {
     }
 
     public SearchCount insertSearchCount(String searchTerm){
-        SearchCount s = new SearchCount();
-        s.searchCount = 1;
-        s.searchTerm = searchTerm;
-        searchCountRepository.insert(s);
-        return s;
+        Optional<SearchCount> existingSearchCountOptional = searchCountRepository.findBySearchTerm(searchTerm);
+        if (existingSearchCountOptional.isPresent()) {
+            // If the search term already exists, increment the search count
+            SearchCount existingSearchCount = existingSearchCountOptional.get();
+            existingSearchCount.setSearchCount(existingSearchCount.getSearchCount() + 1);
+            return searchCountRepository.save(existingSearchCount);
+        } else {
+            // If the search term doesn't exist, insert a new search count with count 1
+            SearchCount newSearchCount = new SearchCount();
+            newSearchCount.setSearchTerm(searchTerm);
+            newSearchCount.setSearchCount(1);
+            return searchCountRepository.insert(newSearchCount);
+        }
+
     }
 
 //    public Optional<SearchCount> checkIfSearchTermExist(String name){
