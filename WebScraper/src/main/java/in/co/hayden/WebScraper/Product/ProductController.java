@@ -33,6 +33,10 @@ public class ProductController {
 
     }
 
+     @GetMapping("/")
+     public ResponseEntity<List<Product>> getAllProducts(){
+         return new ResponseEntity<List<Product>>(productService.allProduct(), HttpStatus.OK);
+     }
     
     // @Autowired
     // private ProductService productService;
