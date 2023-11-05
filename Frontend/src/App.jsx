@@ -46,8 +46,7 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>Product List</h1>
+    <div  style={{ display:'flex',flexWrap: 'wrap'}}>
       {products.map((product) => (
         <CustomCard
           key={product.id.timestamp}

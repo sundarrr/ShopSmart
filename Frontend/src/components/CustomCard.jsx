@@ -9,7 +9,7 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 
 function CustomCard({productThumbnail, productName, productSellingPrice, productComparisonDetails}){
-    return (<Card>
+    return (<Card  style={{ width: '33%' }}>
       <CardContent>
         <img src={productThumbnail} alt="Product Thumbnail" style={{ maxWidth: '100%' }} />
         <Typography variant="h5" component="div">
