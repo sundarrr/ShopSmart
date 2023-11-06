@@ -19,6 +19,17 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
+    @PostMapping("/incrementproductclickcount")
+    public ResponseEntity<Product> addProductsToDatabase(@RequestBody String productName) {
+//        for(Product p: products)
+//        {
+//            productService.insertProduct(p);
+//        }
+        productService.incrementSearchCount(productName);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
      @GetMapping("/")
      public ResponseEntity<List<Product>> getAllProducts(){
          return new ResponseEntity<List<Product>>(productService.allProduct(), HttpStatus.OK);

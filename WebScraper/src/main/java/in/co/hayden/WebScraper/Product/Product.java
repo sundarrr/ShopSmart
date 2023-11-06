@@ -20,6 +20,7 @@ public class Product {
     String productThumbnail;
     String productComparisonDetails;
     String productURL;
+    int productClickCount;
 
     public Product(String productName, String productSellingPrice, String productThumbnail, String productComparisonDetails, String productURL) {
         this.productName = productName;
@@ -27,5 +28,6 @@ public class Product {
         this.productThumbnail = productThumbnail;
         this.productComparisonDetails = productComparisonDetails;
         this.productURL = productURL;
+        this.productClickCount = 0;
     }
 }

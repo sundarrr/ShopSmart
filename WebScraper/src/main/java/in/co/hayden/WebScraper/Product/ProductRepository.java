@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface ProductRepository extends MongoRepository<Product, ObjectId> {
     Optional<Product> findProductByProductName(String name);
     Optional<Product> deleteProductByProductName(String name);
+    Product findFirstByProductName(String productName);
+
 
 }

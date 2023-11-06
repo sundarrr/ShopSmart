@@ -32,5 +32,9 @@ public class ProductService {
     temp.setProductName(newName);
     return productRepository.save(temp);
     }
-
+    public Product incrementSearchCount(String name){
+        Product temp = productRepository.findFirstByProductName(name);
+        temp.setProductClickCount(temp.productClickCount + 1);
+        return productRepository.save(temp);
+    }
 }
