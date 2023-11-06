@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "https://webscraper.hayden.co.in/"})
+
 public class SearchCountController {
     @Autowired
     private SearchCountService searchCountService;

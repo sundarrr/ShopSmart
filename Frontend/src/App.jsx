@@ -24,7 +24,7 @@ function App() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
 
-  const serverURL = "http://webscraperbackend.hayden.co.in:8080/";
+  const serverURL = "https://webscraperbackend.hayden.co.in/";
   // const serverURL = "'http://localhost:8080";
   useEffect(() => {
     const fetchData = async () => {
