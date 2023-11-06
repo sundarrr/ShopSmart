@@ -31,7 +31,7 @@ function App() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        
+
         const data = await response.json();
         console.log(data)
         setProducts(data);
@@ -132,7 +132,10 @@ function App() {
       />
 
       <div style={{margin:10}}>
-      {topSearchItems.map((searchedItem) =>
+  
+      {topSearchItems.filter(product =>
+            !(product.searchTerm.toLowerCase() == (searchValue.toLowerCase()))
+        ).map((searchedItem) =>
       <Chip 
       avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
       label={searchedItem.searchTerm} variant="outlined" onClick={()=> setSearchValue(searchedItem.searchTerm)} style={{margin:2, textTransform: 'capitalize' }}/>
