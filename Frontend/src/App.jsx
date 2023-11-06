@@ -24,10 +24,12 @@ function App() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
 
+  const serverURL = "http://webscraperbackend.hayden.co.in:8080/";
+  // const serverURL = "'http://localhost:8080";
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080');
+        const response = await fetch(serverURL);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -48,7 +50,7 @@ function App() {
 
   async function updateSearchTerm(searchTerm){
     try {
-      const response = await fetch('http://localhost:8080/searchCount', {
+      const response = await fetch(serverURL + 'searchCount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +91,7 @@ function App() {
   useEffect(() => {
     const getSearchTerms = async () => {
       try {
-        const response = await fetch('http://localhost:8080/topSearchTerms');
+        const response = await fetch(serverURL + 'topSearchTerms');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
