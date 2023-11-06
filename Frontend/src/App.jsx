@@ -19,6 +19,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [updateCommonWords, setUpdateCommonWords] = useState(null);
   const [searchValue, setSearchValue] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
@@ -30,7 +31,7 @@ function App() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
+        
         const data = await response.json();
         console.log(data)
         setProducts(data);
@@ -45,9 +46,9 @@ function App() {
     fetchData();
   }, []);
 
-  function updateSearchTerm(searchTerm){
+  async function updateSearchTerm(searchTerm){
     try {
-      const response = fetch('http://localhost:8080/searchCount', {
+      const response = await fetch('http://localhost:8080/searchCount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ function App() {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+      setUpdateCommonWords(searchTerm)
       console.log('Search count incremented successfully!');
     } catch (error) {
       console.error('Error incrementing search count:', error.message);
@@ -103,7 +104,7 @@ function App() {
     };
 
     getSearchTerms();
-  },[searchValue])
+  },[updateCommonWords])
   
   const handleSearchChange = (_, newValue) => {
     setSearchValue(newValue);
