@@ -124,7 +124,7 @@ function App() {
         value={searchValue}
         onChange={handleSearchChange}
         // options={products.map(product => product.productName)}
-        options={['eggs', 'apples', 'eggplant']}
+        options={['Eggs', 'Apples', 'Orange Juice', 'Tomato Ketchup', 'Vegetable Oil', 'Peanut Butter', 'Instant Noodles', 'Milk']}
         renderInput={(params) => (
           <TextField {...params} label="Search for a product..." />
         )}
