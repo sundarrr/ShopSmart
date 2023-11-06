@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -24,7 +27,23 @@ public class SearchCountController {
 
     @GetMapping("/topSearchTerms")
     public ResponseEntity<List<SearchCount>> incrementSearchCount() {
-        return new ResponseEntity<>(searchCountService.topSearch(), HttpStatus.OK);
+        // Fetch all search counts from the database
+        List<SearchCount> allSearchCounts = searchCountService.topSearch();
+
+        // Create a max heap using PriorityQueue with a custom comparator
+        PriorityQueue<SearchCount> maxHeap = new PriorityQueue<>(Comparator.comparingInt(SearchCount::getSearchCount).reversed());
+        maxHeap.addAll(allSearchCounts);
+
+        // Retrieve the top 10 elements from the max heap
+        List<SearchCount> topSearchTerms = new ArrayList<>();
+        int count = 0;
+        while (!maxHeap.isEmpty() && count < 10) {
+            topSearchTerms.add(maxHeap.poll());
+            count++;
+        }
+
+//        return topSearchTerms;
+        return new ResponseEntity<>(topSearchTerms, HttpStatus.OK);
 
     }
 }
