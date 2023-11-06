@@ -1,7 +1,5 @@
 package in.co.hayden.WebScraper.SearchCount;
 
-import in.co.hayden.WebScraper.Product.Product;
-import in.co.hayden.WebScraper.Product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +13,6 @@ public class SearchCountService {
 
     public List<SearchCount> allSearchCounts(){
         List<SearchCount> searchCounts = searchCountRepository.findAll();
-        System.out.println(searchCounts);
         return searchCountRepository.findAll();
     }
 

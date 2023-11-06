@@ -1,7 +1,5 @@
 package in.co.hayden.WebScraper.SearchCount;
 
-
-import in.co.hayden.WebScraper.Product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,6 @@ public class SearchCountController {
     public ResponseEntity<SearchCount> incrementSearchCount(@RequestBody String searchTerm) {
         String searchTermWithoutQuotes = searchTerm.replace("\"", "");
         searchCountService.insertSearchCount(searchTermWithoutQuotes);
-        System.out.println((searchTermWithoutQuotes));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
