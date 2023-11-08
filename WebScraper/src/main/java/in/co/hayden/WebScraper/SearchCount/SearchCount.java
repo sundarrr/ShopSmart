@@ -20,3 +20,17 @@ public class SearchCount {
     String searchTerm;
     int searchCount;
 }
+
+class StringIntPair {
+    String key;
+    int value;
+
+    public StringIntPair(String key, int value) {
+        this.key = key;
+        this.value = value;
+    }
+    public int getValue() {
+    	return this.value;
+    	
+    }
+}
