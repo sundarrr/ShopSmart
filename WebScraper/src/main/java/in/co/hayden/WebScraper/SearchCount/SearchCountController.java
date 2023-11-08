@@ -1,18 +1,19 @@
 package in.co.hayden.WebScraper.SearchCount;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
+
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173", "https://webscraper.hayden.co.in/"})
-
+@RequestMapping()
 public class SearchCountController {
     @Autowired
     private SearchCountService searchCountService;
@@ -44,4 +45,31 @@ public class SearchCountController {
         return new ResponseEntity<>(topSearchTerms, HttpStatus.OK);
 
     }
-}
+    
+    @GetMapping("/wordchecker/{input}")
+    public ResponseEntity<List<String>> wordChecker(@PathVariable String input){
+//    	assuming i get arraylist of all words in our website which will serve as a dictionary
+//    	also can possibly write a function to remove duplicate words from the arraylist
+    	List<String> words = new ArrayList<String>();
+    	words.add("apples");
+    	words.add("oranges");
+    	words.add("bananas");
+    	words.add("grapes");
+    	words.add("pineapple");
+    	words.add("pear");
+    	words.add("kiwi");
+    	
+//    	words.add(word);
+    	
+    	//------------------------------------------------------------------------
+    	
+    	List<String> stringList=searchCountService.sortpairs(input,words);
+//------------------------------------------------------------------------
+//    	try 2
+//---------------------------------------------------------------------
+
+//---------------------------------------------------------
+		return new ResponseEntity<>(stringList,HttpStatus.OK);
+    	
+    }
+    }
