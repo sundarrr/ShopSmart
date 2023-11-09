@@ -24,29 +24,55 @@ function App() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
 
-  const serverURL = "https://webscraperbackend.hayden.co.in/";
-  // const serverURL = "http://localhost:8080/";
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(serverURL);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        console.log(data)
-        setProducts(data);
-        setFilteredProducts(data)
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
+  // const serverURL = "https://webscraperbackend.hayden.co.in/";
+  const serverURL = "http://localhost:8080/";
+  const fetchData = async () => {
+    try {
+      const response = await fetch(serverURL);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
+
+      const data = await response.json();
+      console.log(data)
+      setProducts(data);
+      setFilteredProducts(data)
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
 
     fetchData();
   }, []);
+
+  const incrementProductClickCount = async (productName) => {
+    console.log(productName)
+    try {
+      const response = await fetch(serverURL + 'incrementproductclickcount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body:productName,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      fetchData();
+
+      // setUpdateCommonWords(productName)
+
+      
+      console.log('Search count incremented successfully!');
+    } catch (error) {
+      console.error('Error incrementing search count:', error.message);
+    }
+  };
 
   async function updateSearchTerm(searchTerm){
     try {
@@ -152,6 +178,8 @@ function App() {
           productComparisonDetails={product.productComparisonDetails}
           productThumbnail={product.productThumbnail}
           productURL={product.productURL}
+          productClickCount = {product.productClickCount}
+          onButtonClick={incrementProductClickCount}
         />
       ))}
     </div>

@@ -28,6 +28,8 @@ public class SearchCountService {
         if (existingSearchCountOptional.isPresent()) {
             // If the search term already exists, increment the search count
             SearchCount existingSearchCount = existingSearchCountOptional.get();
+
+            System.out.println(existingSearchCount);
             existingSearchCount.setSearchCount(existingSearchCount.getSearchCount() + 1);
             return searchCountRepository.save(existingSearchCount);
         } else {
