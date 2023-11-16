@@ -8,7 +8,7 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 
 
-function CustomCard({productThumbnail, productName, productSellingPrice, productComparisonDetails}){
+function CustomCard({productThumbnail, productName, productSellingPrice, productComparisonDetails, onButtonClick, productClickCount}){
     return (<Card  style={{ width: '33%' }}>
       <CardContent>
         <img src={productThumbnail} alt="Product Thumbnail" style={{ maxWidth: '100%' }} />
@@ -21,8 +21,8 @@ function CustomCard({productThumbnail, productName, productSellingPrice, product
         <Typography variant="body2" color="text.secondary">
           Comparison Details: {productComparisonDetails}
         </Typography>
-        <Button variant="contained" fullWidth>
-          View
+        <Button variant="contained" fullWidth onClick={() => onButtonClick(productName)}>
+          View :{productClickCount}
         </Button>
       </CardContent>
     </Card>);

@@ -33,6 +33,8 @@ public class ProductService {
     return productRepository.save(temp);
     }
     public Product incrementSearchCount(String name){
+
+        System.out.println(name);
         Product temp = productRepository.findFirstByProductName(name);
         temp.setProductClickCount(temp.productClickCount + 1);
         return productRepository.save(temp);

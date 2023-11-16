@@ -32,6 +32,7 @@ public class ProductController {
 
      @GetMapping("/")
      public ResponseEntity<List<Product>> getAllProducts(){
+        System.out.println(productService.allProduct().get(0).productClickCount);
          return new ResponseEntity<List<Product>>(productService.allProduct(), HttpStatus.OK);
      }
 
