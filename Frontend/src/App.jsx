@@ -84,6 +84,20 @@ function App() {
         body: JSON.stringify(searchTerm),
       });
 
+      try{
+        await fetch(serverURL + 'insertSearchCount', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(searchTerm),
+        });
+      }
+      catch{
+        console.log("error here")
+      }
+
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -149,6 +163,7 @@ function App() {
   return (
     <>
       <Autocomplete
+      freeSolo
         style={{backgroundColor: 'white', margin:10}}
         value={searchValue}
         onChange={handleSearchChange}
@@ -160,13 +175,13 @@ function App() {
       />
 
       <div style={{margin:10}}>
-  
-      {topSearchItems.map((searchedItem) =>
+      
+      {topSearchItems.searchTerm ? topSearchItems.map((searchedItem) =>
       <Chip 
-      disabled = {(searchedItem.searchTerm.toLowerCase() == (searchValue.toLowerCase()))}
+      disabled = { searchedItem.searchTerm & ( searchedItem.searchTerm.toLowerCase() == (searchValue.toLowerCase()))}
       avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
       label={searchedItem.searchTerm} variant="outlined" onClick={()=> setSearchValue(searchedItem.searchTerm)} style={{margin:2, textTransform: 'capitalize' }}/>
-      )}
+      ) : []}
       
       </div>
     <div  style={{ display:'flex',flexWrap: 'wrap'}}>
