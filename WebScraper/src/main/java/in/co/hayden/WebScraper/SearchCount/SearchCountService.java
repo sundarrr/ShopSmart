@@ -11,6 +11,14 @@ public class SearchCountService {
     @Autowired
     private SearchCountRepository searchCountRepository;
 
+
+    public SearchCount insertSearchTerm(String searchTerm){
+            SearchCount newSearchCount = new SearchCount();
+            newSearchCount.setSearchTerm(searchTerm);
+            newSearchCount.setSearchCount(0);
+            return searchCountRepository.insert(newSearchCount);
+    }
+
     public List<SearchCount> allSearchCounts(){
         List<SearchCount> searchCounts = searchCountRepository.findAll();
         return searchCountRepository.findAll();

@@ -16,6 +16,12 @@ import java.util.PriorityQueue;
 public class SearchCountController {
     @Autowired
     private SearchCountService searchCountService;
+    @PostMapping("/insertSearchCount")
+    public ResponseEntity<SearchCount> insertSearchTerm(@RequestBody String searchTerm) {
+        String searchTermWithoutQuotes = searchTerm.replace("\"", "");
+        searchCountService.insertSearchTerm(searchTermWithoutQuotes);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @PostMapping("/searchCount")
     public ResponseEntity<SearchCount> incrementSearchCount(@RequestBody String searchTerm) {
         String searchTermWithoutQuotes = searchTerm.replace("\"", "");
