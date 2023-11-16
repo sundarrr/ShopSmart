@@ -1,5 +1,6 @@
 package in.co.hayden.WebScraper.SearchCount;
 
+import in.co.hayden.WebScraper.Product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,10 @@ import java.util.PriorityQueue;
 public class SearchCountController {
     @Autowired
     private SearchCountService searchCountService;
-    @PostMapping("/insertSearchCount")
-    public ResponseEntity<SearchCount> insertSearchTerm(@RequestBody String searchTerm) {
-        String searchTermWithoutQuotes = searchTerm.replace("\"", "");
-        searchCountService.insertSearchTerm(searchTermWithoutQuotes);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+    @GetMapping("/allSearchCounts")
+    public ResponseEntity<List<SearchCount>> allSearchCounts() {
+        return new ResponseEntity<List<SearchCount>>(searchCountService.topSearch(), HttpStatus.OK);
     }
     @PostMapping("/searchCount")
     public ResponseEntity<SearchCount> incrementSearchCount(@RequestBody String searchTerm) {
