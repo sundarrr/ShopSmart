@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 
 
 function App() {
+  const [editDistanceDidYouMean, setEditDistanceDidYouMean] = useState([]);
   const [products, setProducts] = useState([]);
   const [searchDropDownOptions, setSearchDropDownOptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -81,6 +82,22 @@ function App() {
         },
         body: JSON.stringify(searchTerm),
       });
+
+      // edit distance
+      try {
+        const response = await fetch(serverURL + 'wordchecker/' + searchTerm);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setEditDistanceDidYouMean(data)
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+      console.log("ASDf");
+      
 
       // try{
       //   await fetch(serverURL + 'insertSearchCount', {
@@ -192,8 +209,16 @@ function App() {
       avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
       label={searchedItem.searchTerm} variant="outlined" onClick={()=> setSearchValue(searchedItem.searchTerm)} style={{margin:2, textTransform: 'capitalize' }}/>
       )}
-      
       </div>
+      <div style={{ display: 'flex', marginLeft: 20, color: 'red', alignItems:'center' }}>
+      {editDistanceDidYouMean.length >0 ? <h4 style={{ margin: 0, cursor: 'pointer' }}>Did you mean ?</h4> : <></>}
+      {editDistanceDidYouMean.length >0 && editDistanceDidYouMean.map((item) =>
+            <a href="#" style={{ color: 'red', margin: 10, textDecoration: 'none' }} onClick={()=> setSearchValue(item)}>
+            <h5 style={{ margin: 0, cursor: 'pointer', textDecoration: 'underline' }}>{item}</h5>
+          </a>
+          )}
+
+    </div>
     <div  style={{ display:'flex',flexWrap: 'wrap'}}>
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
       {filteredProducts.map((product) => (
