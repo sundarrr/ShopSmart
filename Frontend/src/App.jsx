@@ -50,7 +50,9 @@ function App() {
     fetchData();
   }, []);
 
-  const incrementProductClickCount = async (productName) => {
+  const incrementProductClickCount = async (productName, productURL) => {
+    window.open(productURL, '_blank');
+
     try {
       const response = await fetch(serverURL + 'incrementproductclickcount', {
         method: 'POST',
@@ -202,8 +204,9 @@ function App() {
 
       <div style={{margin:10}}>
       
-      {topSearchItems.map((searchedItem) =>
+      {topSearchItems.map((searchedItem, index) =>
       <Chip 
+      key={index}
       disabled = { searchValue && ( searchedItem.searchTerm.toLowerCase() == (searchValue.toLowerCase()))}
       avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
       label={searchedItem.searchTerm} variant="outlined" onClick={()=> setSearchValue(searchedItem.searchTerm)} style={{margin:2, textTransform: 'capitalize' }}/>
@@ -220,9 +223,10 @@ function App() {
     </div>
     <div  style={{ display:'flex',flexWrap: 'wrap'}}>
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
-      {filteredProducts.map((product) => (
+      {filteredProducts.map((product, index) => (
         <CustomCard
-          key={product.id.timestamp + product.id.productName}
+        
+          key={index}
           productName={product.productName}
           productSellingPrice={product.productSellingPrice}
           productComparisonDetails={product.productComparisonDetails}
