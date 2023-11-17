@@ -17,6 +17,7 @@ import TextField from '@mui/material/TextField';
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [searchDropDownOptions, setSearchDropDownOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updateCommonWords, setUpdateCommonWords] = useState(null);
@@ -127,6 +128,7 @@ function App() {
 
   useEffect(() => {
     const getSearchTerms = async () => {
+      // For chip component
       try {
         const response = await fetch(serverURL + 'topSearchTerms');
         if (!response.ok) {
@@ -138,6 +140,18 @@ function App() {
       } catch (error) {
         setError(error);
         setLoading(false);
+      }
+      // for search drop down
+      try {
+        const response = await fetch(serverURL + 'allSearchCounts');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setSearchDropDownOptions(data)
+      } catch (error) {
+        setError(error);
       }
     };
 
@@ -163,8 +177,8 @@ function App() {
         style={{backgroundColor: 'white', margin:10}}
         value={searchValue}
         onChange={handleSearchChange}
-        // options={products.map(product => product.productName)}
-        options={['Eggs', 'Apples', 'Orange Juice', 'Tomato Ketchup', 'Vegetable Oil', 'Peanut Butter', 'Instant Noodles', 'Milk']}
+        options={searchDropDownOptions.map(searchCount => searchCount.searchTerm.slice(0,1).toUpperCase() +  searchCount.searchTerm.slice(1, searchCount.searchTerm.length))}
+        // options={['Eggs', 'Apples', 'Orange Juice', 'Tomato Ketchup', 'Vegetable Oil', 'Peanut Butter', 'Instant Noodles', 'Milk']}
         renderInput={(params) => (
           <TextField {...params} label="Search for a product..." />
         )}
