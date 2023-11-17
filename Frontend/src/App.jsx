@@ -96,7 +96,6 @@ function App() {
         setError(error);
         setLoading(false);
       }
-      console.log("ASDf");
       
 
       // try{

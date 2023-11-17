@@ -109,6 +109,9 @@ public class SearchCountService {
 	        
 	        n-=1;
 	    }
+        if(stringList.get(0).equals(input)){
+            return new ArrayList<String>();
+        }
 	    return stringList;
 	}
 
