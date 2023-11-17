@@ -34,7 +34,6 @@ function App() {
       }
 
       const data = await response.json();
-      console.log(data)
       setProducts(data);
       setFilteredProducts(data)
       setLoading(false);
@@ -50,7 +49,6 @@ function App() {
   }, []);
 
   const incrementProductClickCount = async (productName) => {
-    console.log(productName)
     try {
       const response = await fetch(serverURL + 'incrementproductclickcount', {
         method: 'POST',
@@ -68,7 +66,6 @@ function App() {
       // setUpdateCommonWords(productName)
 
       
-      console.log('Search count incremented successfully!');
     } catch (error) {
       console.error('Error incrementing search count:', error.message);
     }
@@ -84,25 +81,24 @@ function App() {
         body: JSON.stringify(searchTerm),
       });
 
-      try{
-        await fetch(serverURL + 'insertSearchCount', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(searchTerm),
-        });
-      }
-      catch{
-        console.log("error here")
-      }
+      // try{
+      //   await fetch(serverURL + 'insertSearchCount', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(searchTerm),
+      //   });
+      // }
+      // catch{
+      //   console.warn("error here")
+      // }
 
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       setUpdateCommonWords(searchTerm)
-      console.log('Search count incremented successfully!');
     } catch (error) {
       console.error('Error incrementing search count:', error.message);
     }
@@ -114,8 +110,9 @@ function App() {
         const filtered = products.filter(product =>
             product.productName.toLowerCase().includes(searchValue.toLowerCase())
         );
-        // console.log(filtered)
         updateSearchTerm(searchValue);
+        console.log("Filtered");
+        console.log(filtered.length == 0);
         setFilteredProducts(filtered);
 
       }
@@ -137,7 +134,6 @@ function App() {
         }
 
         const data = await response.json();
-        console.log(data)
         settopSearchItems(data)
       } catch (error) {
         setError(error);
@@ -176,15 +172,16 @@ function App() {
 
       <div style={{margin:10}}>
       
-      {topSearchItems.searchTerm ? topSearchItems.map((searchedItem) =>
+      {topSearchItems.map((searchedItem) =>
       <Chip 
-      disabled = { searchedItem.searchTerm & ( searchedItem.searchTerm.toLowerCase() == (searchValue.toLowerCase()))}
+      disabled = { searchValue && ( searchedItem.searchTerm.toLowerCase() == (searchValue.toLowerCase()))}
       avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
       label={searchedItem.searchTerm} variant="outlined" onClick={()=> setSearchValue(searchedItem.searchTerm)} style={{margin:2, textTransform: 'capitalize' }}/>
-      ) : []}
+      )}
       
       </div>
     <div  style={{ display:'flex',flexWrap: 'wrap'}}>
+      {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
       {filteredProducts.map((product) => (
         <CustomCard
           key={product.id.timestamp + product.id.productName}
@@ -195,6 +192,7 @@ function App() {
           productURL={product.productURL}
           productClickCount = {product.productClickCount}
           onButtonClick={incrementProductClickCount}
+          dateScraped = {product.id.date}
         />
       ))}
     </div>
