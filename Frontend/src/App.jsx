@@ -98,7 +98,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(searchTerm),
+        body: JSON.stringify(searchTerm.toLowerCase()),
       });
 
 
@@ -127,7 +127,7 @@ function App() {
     if(inputValue != "")
     {
       console.log("checking for suggestion change with the term " + inputValue);
-      const filteredSuggestions = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig'].filter((suggestion) =>
+      const filteredSuggestions = ['Apples', 'Bananas', 'Milk', 'Cherry', 'Date', 'Fig'].filter((suggestion) =>
       suggestion.toLowerCase().includes(inputValue.toLowerCase())
       );
       setSuggestions(filteredSuggestions);
@@ -226,8 +226,8 @@ function App() {
       <div style={{ display: 'flex', marginLeft: 20, color: 'red', alignItems:'center' }}>
       {editDistanceDidYouMean.length >0 ? <h4 style={{ margin: 0, cursor: 'pointer' }}>Did you mean ?</h4> : <></>}
       {editDistanceDidYouMean.length >0 && editDistanceDidYouMean.map((item) =>
-            <a href="#" style={{ color: 'red', margin: 10, textDecoration: 'none' }} onClick={()=> handleDidYouMeanClick(item)}>
-            <h5 style={{ margin: 0, cursor: 'pointer', textDecoration: 'underline' }}>{item}</h5>
+            <a href="#" style={{  margin: 10, textDecoration: 'none' }} onClick={()=> handleDidYouMeanClick(item)}>
+            <h5 style={{color: 'dark-blue', margin: 0, cursor: 'pointer', textDecoration: 'underline' }}>{item}</h5>
           </a>
           )}
     </div>

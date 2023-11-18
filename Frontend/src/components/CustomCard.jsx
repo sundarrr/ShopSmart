@@ -34,8 +34,8 @@ function CustomCard({productThumbnail, productName, productSellingPrice, product
   };
     
     return (<Card  style={{ width: '33%' }}>
-      <CardContent>
-        <img src={productThumbnail} alt="Product Thumbnail" style={{ maxWidth: '100%' }} />
+      <CardContent style={{ textAlign: 'center' }}>
+        <img src={productThumbnail} alt="Product Thumbnail"  />
         <Typography variant="h5" component="div">
           {productName}
         </Typography>
