@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 
 import CustomCard from './components/CustomCard'
 import './App.css'
-import Chip from '@mui/material/Chip';
-import Avatar from '@mui/material/Avatar';
+
 
 import {serverURL} from './constants'
+import CustomChip from './components/CustomChip';
 
 function App() {
   const [editDistanceDidYouMean, setEditDistanceDidYouMean] = useState([]);
@@ -240,13 +240,8 @@ function App() {
 
       <div style={{margin:10}}>
       
-      {topSearchItems.map((searchedItem, index) =>
-      <Chip 
-      key={index}
-      disabled = { searchValue && ( searchedItem.searchTerm.toLowerCase() == (searchValue.toLowerCase()))}
-      avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
-      label={searchedItem.searchTerm} variant="outlined" onClick={()=> setSearchValue(searchedItem.searchTerm)} style={{margin:2, textTransform: 'capitalize' }}/>
-      )}
+      <CustomChip topSearchItems= {topSearchItems} searchValue={searchValue}
+      setSearchValue={setSearchValue}></CustomChip>
       </div>
       <div style={{ display: 'flex', marginLeft: 20, color: 'red', alignItems:'center' }}>
       {editDistanceDidYouMean.length >0 ? <h4 style={{ margin: 0, cursor: 'pointer' }}>Did you mean ?</h4> : <></>}
