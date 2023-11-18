@@ -41,7 +41,7 @@ function CustomChip({setFinalSearchValue, finalSearchValue}){
     };
 
     getSearchTerms();
-  },[updateCommonWords])
+  },[updateCommonWords,finalSearchValue])
   
     
     return (<>

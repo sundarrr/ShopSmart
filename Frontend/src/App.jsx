@@ -22,13 +22,6 @@ function App() {
   const [suggestions, setSuggestions] = useState([]);
 
 
-  const handleSuggestionClick = (suggestion) => {
-    // Set the selected suggestion as the query
-    setFinalSearchValue(suggestion);
-    updateSearchTerm(suggestion);
-    // Clear suggestions
-    setSuggestions([]);
-  };
 
 
   // Get all products data and set it to products and filtered products (to show all products  in the start)
@@ -50,26 +43,24 @@ function App() {
   };
 
   useEffect(() => {
-
     fetchData();
   }, []);
 
 
 
+  const handleSuggestionClick = (suggestion) => {
+    // Set the selected suggestion as the query
+    setFinalSearchValue(suggestion);
+    onEveryValidSearch(suggestion);
+    // Clear suggestions
+    setSuggestions([]);
+  };
 
   // called everytime user searches something or products array changes
   // Adds search term to SearchCounts Table
   // Uses edit distance to find similar words
-  async function updateSearchTerm(searchTerm){
+  async function onEveryValidSearch(searchTerm){
     try {
-      const response = await fetch(serverURL + 'searchCount', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(searchTerm),
-      });
-
       // edit distance
       try {
         const response = await fetch(serverURL + 'wordchecker/' + searchTerm);
@@ -79,9 +70,32 @@ function App() {
 
         const data = await response.json();
         setEditDistanceDidYouMean(data)
+        if (data.length != 0){
+          return
+        }
       } catch (error) {
 
       }
+
+      if(searchTerm != ""){
+        
+        const filtered = products.filter(product =>
+            product.productName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+      }
+      else{
+        setFilteredProducts(products);
+      }
+      const response = await fetch(serverURL + 'searchCount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(searchTerm),
+      });
+
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -92,39 +106,26 @@ function App() {
   }
 
 
-  const onEverySearch = async() =>
-  {    // we need to fix this
-    // setSearchValue(value);
-    try {
-      if(searchValue != ""){
-        
-        const filtered = products.filter(product =>
-            product.productName.toLowerCase().includes(searchValue.toLowerCase())
-        );
-        setFilteredProducts(filtered);
-      }
-      else{
-        setFilteredProducts(products);
-      }
-    } catch (error) {
-      console.warn("Error in line 133")
-    }}
+
   // called everytime user searches something or products array changes
   useEffect(() => {
-    console.log("ADSf");
-    onEverySearch();
+    console.log("final search value updated")
+    setSearchValue(finalSearchValue)
+    onEveryValidSearch(finalSearchValue);
   }, [finalSearchValue]);
 
 
   const handleSearchChange = (event) => {
     const inputValue = event.target.value;
-
     setSearchValue(inputValue);
-    const filteredSuggestions = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig'].filter((suggestion) =>
-    suggestion.toLowerCase().includes(inputValue.toLowerCase())
-  );
-
-  setSuggestions(filteredSuggestions);
+    if(inputValue != "")
+    {
+      console.log("checking for suggestion change with the term " + inputValue);
+      const filteredSuggestions = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig'].filter((suggestion) =>
+      suggestion.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    }
   };
 
   if (loading) {
@@ -138,6 +139,7 @@ function App() {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       // Call your function here
+      onEveryValidSearch(searchValue)
       setFinalSearchValue(searchValue)
     }
   };
