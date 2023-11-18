@@ -1,33 +1,44 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+
 import CustomCard from './components/CustomCard'
 import './App.css'
-import Autocomplete from '@mui/material/Autocomplete';
-import Fab from '@mui/material/Fab';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 
-import TextField from '@mui/material/TextField';
-
+import {serverURL} from './constants'
 
 function App() {
   const [editDistanceDidYouMean, setEditDistanceDidYouMean] = useState([]);
   const [products, setProducts] = useState([]);
-  const [searchDropDownOptions, setSearchDropDownOptions] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updateCommonWords, setUpdateCommonWords] = useState(null);
   const [searchValue, setSearchValue] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
 
-  // const serverURL = "https://webscraperbackend.hayden.co.in/";
-  const serverURL = "http://localhost:8080/";
+
+  const updateSearchSuggestions = async() =>{
+    if(searchValue == ""){
+      setSuggestions([]);
+    }
+    else{
+      // setSuggestions(['Apple', 'Banana', 'Cherry', 'Date', 'Fig']);
+    }
+
+  }
+
+  const handleSuggestionClick = (suggestion) => {
+    // Set the selected suggestion as the query
+    setSearchValue(suggestion);
+    updateSearchTerm(suggestion);
+    // Clear suggestions
+    setSuggestions([]);
+  };
+
+
+  // Get all products data and set it to products and filtered products (to show all products  in the start)
   const fetchData = async () => {
     try {
       const response = await fetch(serverURL);
@@ -50,31 +61,10 @@ function App() {
     fetchData();
   }, []);
 
-  const incrementProductClickCount = async (productName, productURL) => {
-    window.open(productURL, '_blank');
 
-    try {
-      const response = await fetch(serverURL + 'incrementproductclickcount', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body:productName,
-      });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      fetchData();
 
-      // setUpdateCommonWords(productName)
-
-      
-    } catch (error) {
-      console.error('Error incrementing search count:', error.message);
-    }
-  };
-
+  // called everytime user searches something or products array changes
   async function updateSearchTerm(searchTerm){
     try {
       const response = await fetch(serverURL + 'searchCount', {
@@ -100,18 +90,6 @@ function App() {
       }
       
 
-      // try{
-      //   await fetch(serverURL + 'insertSearchCount', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(searchTerm),
-      //   });
-      // }
-      // catch{
-      //   console.warn("error here")
-      // }
 
 
       if (!response.ok) {
@@ -122,6 +100,8 @@ function App() {
       console.error('Error incrementing search count:', error.message);
     }
   }
+
+  // called everytime user searches something or products array changes
   useEffect(() => {
     try {
       if(searchValue != ""){
@@ -129,9 +109,9 @@ function App() {
         const filtered = products.filter(product =>
             product.productName.toLowerCase().includes(searchValue.toLowerCase())
         );
-        updateSearchTerm(searchValue);
-        console.log("Filtered");
-        console.log(filtered.length == 0);
+        // updateSearchTerm(searchValue);
+        
+        updateSearchSuggestions();
         setFilteredProducts(filtered);
 
       }
@@ -139,7 +119,7 @@ function App() {
         setFilteredProducts(products);
       }
     } catch (error) {
-      
+      console.warn("Error in line 133")
     }
   }, [searchValue, products]);
 
@@ -167,7 +147,7 @@ function App() {
         }
 
         const data = await response.json();
-        setSearchDropDownOptions(data)
+        // setSearchDropDownOptions(data)
       } catch (error) {
         setError(error);
       }
@@ -176,8 +156,15 @@ function App() {
     getSearchTerms();
   },[updateCommonWords])
   
-  const handleSearchChange = (_, newValue) => {
-    setSearchValue(newValue);
+  const handleSearchChange = (event) => {
+    const inputValue = event.target.value;
+
+    setSearchValue(inputValue);
+    const filteredSuggestions = suggestions.filter((suggestion) =>
+    suggestion.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
+  setSuggestions(filteredSuggestions);
   };
 
   if (loading) {
@@ -190,17 +177,66 @@ function App() {
 
   return (
     <>
-      <Autocomplete
-      freeSolo
-        style={{backgroundColor: 'white', margin:10}}
-        value={searchValue}
-        onChange={handleSearchChange}
-        options={searchDropDownOptions.map(searchCount => searchCount.searchTerm.slice(0,1).toUpperCase() +  searchCount.searchTerm.slice(1, searchCount.searchTerm.length))}
-        // options={['Eggs', 'Apples', 'Orange Juice', 'Tomato Ketchup', 'Vegetable Oil', 'Peanut Butter', 'Instant Noodles', 'Milk']}
-        renderInput={(params) => (
-          <TextField {...params} label="Search for a product..." />
+  <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // height: '10h',
+        backgroundColor: '#f5f5f5',
+      }}
+    >
+      <div style={{ position: 'relative', width: '100%' }}>
+        <input
+          type="text"
+          value={searchValue}
+          onChange={handleSearchChange}
+          placeholder="Search..."
+          style={{
+            width: '100%',
+            padding: '10px',
+            fontSize: '16px',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            boxSizing: 'border-box',
+            backgroundColor: 'white',
+            color:"black"
+          }}
+        />
+        {suggestions.length > 0 && (
+          <ul
+            style={{
+              listStyle: 'none',
+              padding: '0',
+              margin: '0',
+              position: 'absolute',
+              top: '100%',
+              left: '0',
+              width: '100%',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              background: '#fff',
+              zIndex: '100',
+              borderRadius: '5px',
+              color:' black'
+            }}
+          >
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                style={{
+                  padding: '10px',
+                  borderBottom: '1px solid #ccc',
+                  cursor: 'pointer',
+                }}
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
         )}
-      />
+      </div>
+    </div>
 
       <div style={{margin:10}}>
       
@@ -233,7 +269,7 @@ function App() {
           productThumbnail={product.productThumbnail}
           productURL={product.productURL}
           productClickCount = {product.productClickCount}
-          onButtonClick={incrementProductClickCount}
+          fetchData={fetchData}
           dateScraped = {product.id.date}
         />
       ))}
