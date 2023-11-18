@@ -54,7 +54,7 @@ public class SearchCountController {
     
     @GetMapping("/wordchecker/{input}")
     public ResponseEntity<List<String>> wordChecker(@PathVariable String input){
-    	String filePath="food_dictionary.txt";
+    	String filePath="WebScraper/src/main/java/in/co/hayden/WebScraper/SearchCount/food_dictionary.txt";
     	List<String> words = searchCountService.readFoodItemsFromFile(filePath);
     	System.out.println(words);
     	List<String> stringList=searchCountService.sortpairs(input,words);

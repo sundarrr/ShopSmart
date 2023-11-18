@@ -78,8 +78,8 @@ function App() {
         const data = await response.json();
         setEditDistanceDidYouMean(data)
         // if (data.length != 0){
-        //   console.log("Not valid search");
-        //   console.log(data)
+          // console.log("Not valid search");
+          // console.log(data)
         //   return
         // }
       } catch (error) {
@@ -153,6 +153,7 @@ function App() {
       // Call your function here
       onEveryValidSearch(searchValue)
       setFinalSearchValue(searchValue)
+      setSuggestions([]);
     }
   };
 

@@ -12,6 +12,7 @@ function CustomChip({setFinalSearchValue, finalSearchValue}){
 
 
   useEffect(() => {
+    console.log("custom chip logic")
     const getSearchTerms = async () => {
       // For chip component
       try {
