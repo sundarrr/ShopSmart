@@ -47,7 +47,7 @@ function App() {
   const handleDidYouMeanClick = (suggestion) => {
     // Set the selected suggestion as the query
     setFinalSearchValue(suggestion);
-    onEveryValidSearch(suggestion);
+    // onEveryValidSearch(suggestion);
     // Clear suggestions
     setSuggestions([]);
   };
@@ -55,7 +55,7 @@ function App() {
   const handleSuggestionClick = (suggestion) => {
     // Set the selected suggestion as the query
     setFinalSearchValue(suggestion);
-    onEveryValidSearch(suggestion);
+    // onEveryValidSearch(suggestion);
     // Clear suggestions
     setSuggestions([]);
   };
@@ -64,6 +64,9 @@ function App() {
   // Adds search term to SearchCounts Table
   // Uses edit distance to find similar words
   async function onEveryValidSearch(searchTerm){
+    if (searchTerm == ""){
+      return
+    }
     try {
       // edit distance
       try {
@@ -74,11 +77,11 @@ function App() {
 
         const data = await response.json();
         setEditDistanceDidYouMean(data)
-        if (data.length != 0){
-          console.log("Not valid search");
-          console.log(data)
-          return
-        }
+        // if (data.length != 0){
+        //   console.log("Not valid search");
+        //   console.log(data)
+        //   return
+        // }
       } catch (error) {
 
       }
@@ -131,6 +134,9 @@ function App() {
       suggestion.toLowerCase().includes(inputValue.toLowerCase())
       );
       setSuggestions(filteredSuggestions);
+    }
+    else{
+      setSuggestions([])
     }
   };
 
