@@ -3,6 +3,9 @@ package in.co.hayden.WebScraper.SearchCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -114,6 +117,23 @@ public class SearchCountService {
         }
 	    return stringList;
 	}
+	
+	
+    public List<String> readFoodItemsFromFile(String filePath) {
+        List<String> foodItems = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+//                each line in the file represents a food item
+                foodItems.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return foodItems;
+    }
 
 	
 	
