@@ -6,28 +6,7 @@ import Avatar from '@mui/material/Avatar';
 
 function CustomChip({topSearchItems, searchValue,setSearchValue}){
 
-      // Called on clicking view button  (products array is recreated post this)
-  const incrementProductClickCount = async (productName, productURL) => {
-    window.open(productURL, '_blank');
 
-    try {
-      const response = await fetch(serverURL + 'incrementproductclickcount', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body:productName,
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      fetchData();
-      
-    } catch (error) {
-      console.error('Error incrementing search count:', error.message);
-    }
-  };
     
     return (<>
     {topSearchItems.map((searchedItem, index) =>
