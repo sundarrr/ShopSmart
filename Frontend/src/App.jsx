@@ -13,9 +13,6 @@ function App() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // chip component
-  // const [updateCommonWords, setUpdateCommonWords] = useState(null);
-  const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
   // search component
   const [finalSearchValue, setFinalSearchValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
@@ -47,6 +44,13 @@ function App() {
   }, []);
 
 
+  const handleDidYouMeanClick = (suggestion) => {
+    // Set the selected suggestion as the query
+    setFinalSearchValue(suggestion);
+    onEveryValidSearch(suggestion);
+    // Clear suggestions
+    setSuggestions([]);
+  };
 
   const handleSuggestionClick = (suggestion) => {
     // Set the selected suggestion as the query
@@ -71,6 +75,8 @@ function App() {
         const data = await response.json();
         setEditDistanceDidYouMean(data)
         if (data.length != 0){
+          console.log("Not valid search");
+          console.log(data)
           return
         }
       } catch (error) {
@@ -216,7 +222,7 @@ function App() {
       <div style={{ display: 'flex', marginLeft: 20, color: 'red', alignItems:'center' }}>
       {editDistanceDidYouMean.length >0 ? <h4 style={{ margin: 0, cursor: 'pointer' }}>Did you mean ?</h4> : <></>}
       {editDistanceDidYouMean.length >0 && editDistanceDidYouMean.map((item) =>
-            <a href="#" style={{ color: 'red', margin: 10, textDecoration: 'none' }} onClick={()=> setSearchValue(item)}>
+            <a href="#" style={{ color: 'red', margin: 10, textDecoration: 'none' }} onClick={()=> handleDidYouMeanClick(item)}>
             <h5 style={{ margin: 0, cursor: 'pointer', textDecoration: 'underline' }}>{item}</h5>
           </a>
           )}
