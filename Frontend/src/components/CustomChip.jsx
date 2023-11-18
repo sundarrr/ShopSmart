@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 
 function CustomChip({setFinalSearchValue, finalSearchValue}){
   // chip component
-  const [updateCommonWords, setUpdateCommonWords] = useState(null);
+//   const [updateCommonWords, setUpdateCommonWords] = useState(null);
   const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
 
 
@@ -41,7 +41,7 @@ function CustomChip({setFinalSearchValue, finalSearchValue}){
 
   useEffect(() => {
     setTimeout(getSearchTerms, 500)
-  },[updateCommonWords,finalSearchValue])
+  },[finalSearchValue])
   
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function CustomChip({setFinalSearchValue, finalSearchValue}){
       key={index}
       disabled = { finalSearchValue && ( searchedItem.searchTerm.toLowerCase() == (finalSearchValue.toLowerCase()))}
       avatar={<Avatar style={{backgroundColor: '#1976d2', color:'white'}}>{searchedItem.searchCount}</Avatar>}
-      label={searchedItem.searchTerm} variant="outlined" onClick={()=> {setFinalSearchValue(searchedItem.searchTerm); setUpdateCommonWords("asdf")}} style={{margin:2, textTransform: 'capitalize' }}/>
+      label={searchedItem.searchTerm} variant="outlined" onClick={()=> {setFinalSearchValue(searchedItem.searchTerm)}} style={{margin:2, textTransform: 'capitalize' }}/>
       )}
     </>);
 }
