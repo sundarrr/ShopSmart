@@ -13,25 +13,18 @@ function App() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [updateCommonWords, setUpdateCommonWords] = useState(null);
+  // chip component
+  // const [updateCommonWords, setUpdateCommonWords] = useState(null);
+  const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
+  // search component
+  const [finalSearchValue, setFinalSearchValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [topSearchItems, settopSearchItems] = useState([{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'},{searchTerm:'apples', count:'10'}]);
 
-
-  const updateSearchSuggestions = async() =>{
-    if(searchValue == ""){
-      setSuggestions([]);
-    }
-    else{
-      // setSuggestions(['Apple', 'Banana', 'Cherry', 'Date', 'Fig']);
-    }
-
-  }
 
   const handleSuggestionClick = (suggestion) => {
     // Set the selected suggestion as the query
-    setSearchValue(suggestion);
+    setFinalSearchValue(suggestion);
     updateSearchTerm(suggestion);
     // Clear suggestions
     setSuggestions([]);
@@ -65,6 +58,8 @@ function App() {
 
 
   // called everytime user searches something or products array changes
+  // Adds search term to SearchCounts Table
+  // Uses edit distance to find similar words
   async function updateSearchTerm(searchTerm){
     try {
       const response = await fetch(serverURL + 'searchCount', {
@@ -85,82 +80,47 @@ function App() {
         const data = await response.json();
         setEditDistanceDidYouMean(data)
       } catch (error) {
-        setError(error);
-        setLoading(false);
+
       }
-      
-
-
-
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      setUpdateCommonWords(searchTerm)
+      // setUpdateCommonWords(searchTerm)
     } catch (error) {
       console.error('Error incrementing search count:', error.message);
     }
   }
 
-  // called everytime user searches something or products array changes
-  useEffect(() => {
+
+  const onEverySearch = async() =>
+  {    // we need to fix this
+    // setSearchValue(value);
     try {
       if(searchValue != ""){
         
         const filtered = products.filter(product =>
             product.productName.toLowerCase().includes(searchValue.toLowerCase())
         );
-        // updateSearchTerm(searchValue);
-        
-        updateSearchSuggestions();
         setFilteredProducts(filtered);
-
       }
       else{
         setFilteredProducts(products);
       }
     } catch (error) {
       console.warn("Error in line 133")
-    }
-  }, [searchValue, products]);
-
-
+    }}
+  // called everytime user searches something or products array changes
   useEffect(() => {
-    const getSearchTerms = async () => {
-      // For chip component
-      try {
-        const response = await fetch(serverURL + 'topSearchTerms');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+    console.log("ADSf");
+    onEverySearch();
+  }, [finalSearchValue]);
 
-        const data = await response.json();
-        settopSearchItems(data)
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-      // for search drop down
-      try {
-        const response = await fetch(serverURL + 'allSearchCounts');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
 
-        const data = await response.json();
-        // setSearchDropDownOptions(data)
-      } catch (error) {
-        setError(error);
-      }
-    };
-
-    getSearchTerms();
-  },[updateCommonWords])
-  
   const handleSearchChange = (event) => {
     const inputValue = event.target.value;
 
     setSearchValue(inputValue);
-    const filteredSuggestions = suggestions.filter((suggestion) =>
+    const filteredSuggestions = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig'].filter((suggestion) =>
     suggestion.toLowerCase().includes(inputValue.toLowerCase())
   );
 
@@ -174,6 +134,14 @@ function App() {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      // Call your function here
+      setFinalSearchValue(searchValue)
+    }
+  };
+
 
   return (
     <>
@@ -191,6 +159,7 @@ function App() {
           type="text"
           value={searchValue}
           onChange={handleSearchChange}
+          onKeyDown={handleKeyPress}
           placeholder="Search..."
           style={{
             width: '100%',
@@ -240,8 +209,7 @@ function App() {
 
       <div style={{margin:10}}>
       
-      <CustomChip topSearchItems= {topSearchItems} searchValue={searchValue}
-      setSearchValue={setSearchValue}></CustomChip>
+      <CustomChip finalSearchValue= {finalSearchValue} setFinalSearchValue={setFinalSearchValue}></CustomChip>
       </div>
       <div style={{ display: 'flex', marginLeft: 20, color: 'red', alignItems:'center' }}>
       {editDistanceDidYouMean.length >0 ? <h4 style={{ margin: 0, cursor: 'pointer' }}>Did you mean ?</h4> : <></>}
@@ -250,13 +218,11 @@ function App() {
             <h5 style={{ margin: 0, cursor: 'pointer', textDecoration: 'underline' }}>{item}</h5>
           </a>
           )}
-
     </div>
     <div  style={{ display:'flex',flexWrap: 'wrap'}}>
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
       {filteredProducts.map((product, index) => (
         <CustomCard
-        
           key={index}
           productName={product.productName}
           productSellingPrice={product.productSellingPrice}
