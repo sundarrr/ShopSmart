@@ -11,39 +11,42 @@ function CustomChip({setFinalSearchValue, finalSearchValue}){
 
 
 
+  const getSearchTerms = async () => {
+    // For chip component
+    try {
+      const response = await fetch(serverURL + 'topSearchTerms');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      settopSearchItems(data)
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+    // for search drop down
+    try {
+      const response = await fetch(serverURL + 'allSearchCounts');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      // setSearchDropDownOptions(data)
+    } catch (error) {
+      setError(error);
+    }
+  };
+
   useEffect(() => {
-    console.log("custom chip logic")
-    const getSearchTerms = async () => {
-      // For chip component
-      try {
-        const response = await fetch(serverURL + 'topSearchTerms');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        settopSearchItems(data)
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-      // for search drop down
-      try {
-        const response = await fetch(serverURL + 'allSearchCounts');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        // setSearchDropDownOptions(data)
-      } catch (error) {
-        setError(error);
-      }
-    };
-
-    getSearchTerms();
+    setTimeout(getSearchTerms, 500)
   },[updateCommonWords,finalSearchValue])
   
+
+  useEffect(() => {
+    getSearchTerms();
+  },[])
     
     return (<>
     {topSearchItems.map((searchedItem, index) =>

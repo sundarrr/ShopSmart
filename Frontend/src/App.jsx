@@ -65,8 +65,14 @@ function App() {
   // Uses edit distance to find similar words
   async function onEveryValidSearch(searchTerm){
     if (searchTerm == ""){
+      setFilteredProducts(products);
       return
     }
+      const filtered = products.filter(product =>
+          product.productName.toLowerCase().includes(searchTerm.toLowerCase()))
+      setFilteredProducts(filtered);
+    
+
     try {
       // edit distance
       try {
@@ -77,25 +83,16 @@ function App() {
 
         const data = await response.json();
         setEditDistanceDidYouMean(data)
-        // if (data.length != 0){
+        if (data.length != 0){
           // console.log("Not valid search");
           // console.log(data)
-        //   return
-        // }
+          return
+        }
       } catch (error) {
 
       }
 
-      if(searchTerm != ""){
-        
-        const filtered = products.filter(product =>
-            product.productName.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredProducts(filtered);
-      }
-      else{
-        setFilteredProducts(products);
-      }
+
       const response = await fetch(serverURL + 'searchCount', {
         method: 'POST',
         headers: {
