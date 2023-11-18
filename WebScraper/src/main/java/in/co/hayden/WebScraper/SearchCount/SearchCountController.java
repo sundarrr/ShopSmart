@@ -54,31 +54,12 @@ public class SearchCountController {
     
     @GetMapping("/wordchecker/{input}")
     public ResponseEntity<List<String>> wordChecker(@PathVariable String input){
-//    	assuming i get arraylist of all words in our website which will serve as a dictionary
-//    	also can possibly write a function to remove duplicate words from the arraylist
-//    	List<String> words = new ArrayList<String>();
     	String filePath="food_dictionary.txt";
     	List<String> words = searchCountService.readFoodItemsFromFile(filePath);
     	System.out.println(words);
-//    	words.add("apples");
-//    	words.add("oranges");
-//    	words.add("bananas");
-//    	words.add("grapes");
-//    	words.add("pineapple");
-//    	words.add("pear");
-//    	words.add("kiwi");
-    	
-//    	words.add(word);
-    	
-    	//------------------------------------------------------------------------
-    	
     	List<String> stringList=searchCountService.sortpairs(input,words);
-//------------------------------------------------------------------------
-//    	try 2
-//---------------------------------------------------------------------
-
-//---------------------------------------------------------
 		return new ResponseEntity<>(stringList,HttpStatus.OK);
     	
     }
+    
     }
