@@ -57,7 +57,9 @@ public class ProductService {
     public TreeMap<String, Integer> processUrls(List<String> urls,String product) {
         // TreeMap to store key-value pairs (String -> Integer)
         TreeMap<String, Integer> store = new TreeMap<>();
-
+        store.put("zehrs",0);
+        store.put("metro",0);
+        store.put("nofrills",0);
         // Loop through the URLs
         for (String url : urls) {
             // Extract the store name and product type (e.g., "eggs") from the URL
