@@ -2,19 +2,61 @@ package in.co.hayden.WebScraper.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.Map;
+import java.util.*;
 
 @Service
 public class ProductService {
+
+    //    Inverted Index
+    static class InvertedIndex {
+
+        private Map<String, Set<Product>> index;
+
+        public InvertedIndex() {
+            index = new HashMap<>();
+        }
+
+        public void buildIndex(List<Product> productList) {
+            for (Product product : productList) {
+                String productName = product.getProductName().toLowerCase();
+
+                // Split the product name into individual words (you might want to improve this based on your needs)
+                String[] words = productName.split("\\s+");
+
+                for (String word : words) {
+                    index.putIfAbsent(word, new HashSet<>());
+                    index.get(word).add(product);
+                }
+            }
+        }
+
+        public Set<Product> getProducts(String query) {
+            return index.getOrDefault(query.toLowerCase(), new HashSet<>());
+        }
+
+
+    }
+
+    //    Inverted Index end
     @Autowired
     private ProductRepository productRepository;
 
     public List<Product> allProduct(){
         return productRepository.findAll();
     }
+
+
+    public List<Product> getProductsByName(String query){
+        List<Product> productList = productRepository.findAll();// Add more products as needed
+        InvertedIndex invertedIndex = new InvertedIndex();
+        invertedIndex.buildIndex(productRepository.findAll());
+        return List.copyOf(invertedIndex.getProducts(query));
+    }
+
     public Product insertProduct(Product p){
         productRepository.insert(p);
         return p;
