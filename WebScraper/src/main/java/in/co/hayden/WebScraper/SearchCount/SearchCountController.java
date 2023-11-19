@@ -56,7 +56,6 @@ public class SearchCountController {
     public ResponseEntity<List<String>> wordChecker(@PathVariable String input){
     	String filePath="food_dictionary.txt";
     	List<String> words = searchCountService.readFoodItemsFromFile(filePath);
-    	System.out.println(words);
     	List<String> stringList=searchCountService.sortpairs(input.toLowerCase(),words);
 		return new ResponseEntity<>(stringList,HttpStatus.OK);
     	

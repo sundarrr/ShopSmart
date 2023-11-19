@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import CustomCard from './components/CustomCard'
 import './App.css'
+import _ from 'lodash';
 
 
 import {serverURL} from './constants'
@@ -121,16 +122,32 @@ function App() {
   }, [finalSearchValue]);
 
 
+  const fetchSuggestions = async (value) => {
+    try {
+      const response = await fetch(serverURL + 'getSearchSuggestions/' + value);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setSuggestions(data);
+
+    } catch (error) {
+
+    }
+  };
+
+  const fetchSuggestionsDebounced = _.debounce((inputValue) => {
+    fetchSuggestions(inputValue.toLowerCase());
+  }, 300);
+
   const handleSearchChange = (event) => {
     const inputValue = event.target.value;
     setSearchValue(inputValue);
     if(inputValue != "")
     {
+      fetchSuggestionsDebounced(inputValue.toLowerCase())
       console.log("checking for suggestion change with the term " + inputValue);
-      const filteredSuggestions = ['Apples', 'Bananas', 'Milk', 'Cherry', 'Date', 'Fig'].filter((suggestion) =>
-      suggestion.toLowerCase().includes(inputValue.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
     }
     else{
       setSuggestions([])
