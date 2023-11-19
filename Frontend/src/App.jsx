@@ -22,6 +22,20 @@ function App() {
 
   const isSmallScreen = window.innerWidth <= 600;
 
+  const fetchFilteredProducts = async (searchTerm) => {
+    try {
+      const response = await fetch(serverURL + "getProductsByName/" + searchTerm);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log("ASDF",data)
+      setFilteredProducts(data);
+    } catch (error) {
+
+    }
+  };
+
 
 
   // Get all products data and set it to products and filtered products (to show all products  in the start)
@@ -71,10 +85,11 @@ function App() {
       setFilteredProducts(products);
       return
     }
-      const filtered = products.filter(product =>
-          product.productName.toLowerCase().includes(searchTerm.toLowerCase()))
-      setFilteredProducts(filtered);
+      // const filtered = products.filter(product =>
+      //     product.productName.toLowerCase().includes(searchTerm.toLowerCase()))
+      // setFilteredProducts(filtered);
     
+      fetchFilteredProducts(searchTerm.toLowerCase())
 
     try {
       // edit distance
@@ -146,6 +161,7 @@ function App() {
   const handleSearchChange = (event) => {
     const inputValue = event.target.value;
     setSearchValue(inputValue);
+    fetchFilteredProducts(inputValue)
     if(inputValue != "")
     {
       fetchSuggestionsDebounced(inputValue.toLowerCase())
