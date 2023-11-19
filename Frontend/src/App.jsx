@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 import {serverURL} from './constants'
 import CustomChip from './components/CustomChip';
+import CompanyStats from './components/CompanyStats'
 
 function App() {
   const [editDistanceDidYouMean, setEditDistanceDidYouMean] = useState([]);
@@ -248,6 +249,10 @@ function App() {
             <h5 style={{color: 'dark-blue', margin: 0, cursor: 'pointer', textDecoration: 'underline' }}>{item}</h5>
           </a>
           )}
+    </div>
+    <div style={{  flexGrow:1}}>
+
+    <CompanyStats finalSearchValue={finalSearchValue}></CompanyStats>
     </div>
     <div  style={{...{ display:'flex',flexWrap: 'wrap'},...{ flexDirection: isSmallScreen ? 'column' : 'row'}}}>
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
