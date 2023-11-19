@@ -8,7 +8,7 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 
 import {serverURL} from '../constants'
 
-
+const isSmallScreen = window.innerWidth <= 600;
 function CustomCard({productThumbnail, productName, productSellingPrice, productComparisonDetails, onButtonClick, productClickCount, dateScraped, productURL, fetchData}){
       // Called on clicking view button  (products array is recreated post this)
   const incrementProductClickCount = async (productName, productURL) => {
@@ -33,7 +33,7 @@ function CustomCard({productThumbnail, productName, productSellingPrice, product
     }
   };
     
-    return (<Card  style={{ width: '33%' }}>
+    return (<Card  style={isSmallScreen ? { width: '100%' }: { width: '33%' }}>
       <CardContent style={{ textAlign: 'center' }}>
         <img src={productThumbnail} alt="Product Thumbnail"  />
         <Typography variant="h5" component="div">

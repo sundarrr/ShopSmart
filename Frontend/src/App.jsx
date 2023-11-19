@@ -19,6 +19,7 @@ function App() {
   const [searchValue, setSearchValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
+  const isSmallScreen = window.innerWidth <= 600;
 
 
 
@@ -248,7 +249,7 @@ function App() {
           </a>
           )}
     </div>
-    <div  style={{ display:'flex',flexWrap: 'wrap'}}>
+    <div  style={{...{ display:'flex',flexWrap: 'wrap'},...{ flexDirection: isSmallScreen ? 'column' : 'row'}}}>
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
       {filteredProducts.map((product, index) => (
         <CustomCard
