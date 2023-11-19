@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeMap;
 
 @Service
 public class ProductService {
@@ -38,5 +39,35 @@ public class ProductService {
         Product temp = productRepository.findFirstByProductName(name);
         temp.setProductClickCount(temp.productClickCount + 1);
         return productRepository.save(temp);
+    }
+    
+    // Method to extract the store name from the URL
+    private String extractStoreName(String url, String product) {
+        if (url.contains("zehrs") && url.contains(product)) {
+            return "zehrs";
+        } else if (url.contains("metro")  && url.contains(product)) {
+            return "metro";
+        } else if (url.contains("nofrills")  && url.contains(product)) {
+            return "nofrills";
+        } else {
+            return null; // Return null if the URL doesn't match any of the specified stores and product
+        }
+    }
+    
+    public TreeMap<String, Integer> processUrls(List<String> urls,String product) {
+        // TreeMap to store key-value pairs (String -> Integer)
+        TreeMap<String, Integer> store = new TreeMap<>();
+
+        // Loop through the URLs
+        for (String url : urls) {
+            // Extract the store name and product type (e.g., "eggs") from the URL
+            String storeName = extractStoreName(url,product.toLowerCase());
+            if (storeName != null) {
+//            	System.out.println(storeName);
+                store.put(storeName, store.getOrDefault(storeName, 0) + 1);
+            }
+        }
+
+        return store;
     }
 }
