@@ -3,7 +3,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173", "https://webscraper.hayden.co.in/"})
@@ -35,6 +38,19 @@ public class ProductController {
         System.out.println(productService.allProduct().get(0).productClickCount);
          return new ResponseEntity<List<Product>>(productService.allProduct(), HttpStatus.OK);
      }
+     
+     @GetMapping("/counturl/{fooditem}")
+     public ResponseEntity<TreeMap<String, Integer>> getSystemUrlCount(@PathVariable String fooditem){
+    	List<Product> p =productService.allProduct();
+    	List<String> urls = new ArrayList<>();
+    	for (Product products:p) {
+    		urls.add(products.productURL);
+    	}
+        TreeMap<String, Integer> result = productService.processUrls(urls,fooditem);
+//        System.out.println("Key-Value Pairs: " + result);
 
+    	
+        return new ResponseEntity<TreeMap<String, Integer>>(result, HttpStatus.OK);
+     }
 }
 
