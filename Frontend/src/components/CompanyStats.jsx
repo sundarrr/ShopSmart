@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Container, Grid } from '@mui/material';
+import {serverURL} from '../constants'
 
 const CompanyStats = ({finalSearchValue}) => {
   const [data, setData] = useState(null);
@@ -10,7 +11,7 @@ const CompanyStats = ({finalSearchValue}) => {
         if(finalSearchValue == ""){
             return 
         }
-        const response = await fetch('http://localhost:8080/counturl/' + finalSearchValue);
+        const response = await fetch(serverURL + 'counturl/' + finalSearchValue);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
