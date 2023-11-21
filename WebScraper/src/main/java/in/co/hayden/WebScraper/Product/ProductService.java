@@ -80,6 +80,8 @@ public class ProductService {
         System.out.println(name);
         Product temp = productRepository.findFirstByProductName(name);
         temp.setProductClickCount(temp.productClickCount + 1);
+        PageRankAVLTree prs = new PageRankAVLTree();
+        //prs.updateClickCount(temp.productName,temp.productClickCount);
         return productRepository.save(temp);
     }
     
@@ -113,5 +115,17 @@ public class ProductService {
         }
 
         return store;
+    }
+
+    public List<Product> pageRank(){
+        List<Product> temp =  productRepository.findAll();
+        PageRankAVLTree prs = new PageRankAVLTree();
+        for(int i=0;i<temp.size();i++)
+        {
+            prs.insert(temp.get(i));
+            //System.out.println(temp.get(i).productName+"     "+temp.get(i).productClickCount);
+        }
+        temp=prs.getPageRank();
+        return temp;
     }
 }
