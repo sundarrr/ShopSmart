@@ -26,8 +26,8 @@ public class ProductService {
 
                 // Split the product name into individual words (you might want to improve this based on your needs)
                 String[] words = productName.split("\\s+");
-
                 for (String word : words) {
+                    word = word.toLowerCase();
                     index.putIfAbsent(word, new HashSet<>());
                     index.get(word).add(product);
                 }
@@ -86,28 +86,32 @@ public class ProductService {
     }
     
     // Method to extract the store name from the URL
-    private String extractStoreName(String url, String product) {
-        if (url.contains("zehrs") && url.contains(product)) {
+    private String extractStoreName(Product p, String product) {
+        String url = p.productURL.toLowerCase();
+        String pName = p.productName.toLowerCase();
+        if (url.contains("zehrs") && pName.contains(product)) {
+            System.out.println(url + " " + pName);
             return "zehrs";
-        } else if (url.contains("metro")  && url.contains(product)) {
+        } else if (url.contains("metro")  && pName.contains(product)) {
             return "metro";
-        } else if (url.contains("nofrills")  && url.contains(product)) {
+        } else if (url.contains("nofrills")  && pName.contains(product)) {
             return "nofrills";
         } else {
             return null; // Return null if the URL doesn't match any of the specified stores and product
         }
     }
     
-    public TreeMap<String, Integer> processUrls(List<String> urls,String product) {
+    public TreeMap<String, Integer> processUrls(List<Product> products,String productSearch) {
+        System.out.println(productSearch);
         // TreeMap to store key-value pairs (String -> Integer)
         TreeMap<String, Integer> store = new TreeMap<>();
         store.put("zehrs",0);
         store.put("metro",0);
         store.put("nofrills",0);
         // Loop through the URLs
-        for (String url : urls) {
+        for (Product p : products) {
             // Extract the store name and product type (e.g., "eggs") from the URL
-            String storeName = extractStoreName(url,product.toLowerCase());
+            String storeName = extractStoreName(p,productSearch.toLowerCase());
             if (storeName != null) {
 //            	System.out.println(storeName);
                 store.put(storeName, store.getOrDefault(storeName, 0) + 1);

@@ -105,11 +105,8 @@ public class ProductController {
     @GetMapping("/counturl/{fooditem}")
     public ResponseEntity<TreeMap<String, Integer>> getSystemUrlCount(@PathVariable String fooditem) {
         List<Product> p = productService.allProduct();
-        List<String> urls = new ArrayList<>();
-        for (Product products : p) {
-            urls.add(products.productURL);
-        }
-        TreeMap<String, Integer> result = productService.processUrls(urls, fooditem);
+
+        TreeMap<String, Integer> result = productService.processUrls(p, fooditem);
         // System.out.println("Key-Value Pairs: " + result);
 
         return new ResponseEntity<TreeMap<String, Integer>>(result, HttpStatus.OK);
