@@ -93,8 +93,10 @@ public class ProductService {
             System.out.println(url + " " + pName);
             return "zehrs";
         } else if (url.contains("metro")  && pName.contains(product)) {
+        	System.out.println(url + " " + pName);
             return "metro";
         } else if (url.contains("nofrills")  && pName.contains(product)) {
+        	System.out.println(url + " " + pName);
             return "nofrills";
         } else {
             return null; // Return null if the URL doesn't match any of the specified stores and product
@@ -102,7 +104,7 @@ public class ProductService {
     }
     
     public TreeMap<String, Integer> processUrls(List<Product> products,String productSearch) {
-        System.out.println(productSearch);
+//        System.out.println(productSearch);
         // TreeMap to store key-value pairs (String -> Integer)
         TreeMap<String, Integer> store = new TreeMap<>();
         store.put("zehrs",0);
