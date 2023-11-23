@@ -16,6 +16,7 @@ import java.util.PriorityQueue;
 @CrossOrigin(origins = {"http://localhost:5173", "https://webscraper.hayden.co.in/"})
 @RequestMapping()
 public class SearchCountController {
+    private ArrayList<String> newSearchTerms = new ArrayList<>();
     @Autowired
     private SearchCountService searchCountService;
 
@@ -26,8 +27,22 @@ public class SearchCountController {
     @PostMapping("/searchCount")
     public ResponseEntity<SearchCount> incrementSearchCount(@RequestBody String searchTerm) {
         String searchTermWithoutQuotes = searchTerm.replace("\"", "");
-        searchCountService.insertSearchCount(searchTermWithoutQuotes);
+        if(! searchCountService.isSearchCountPresent(searchTerm)){
+            newSearchTerms.add(searchTerm);
+        }
+            searchCountService.insertSearchCount(searchTermWithoutQuotes);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/newSearchTerms")
+    public ResponseEntity<ArrayList<String>> newSearchTerms() {
+        return new ResponseEntity<>(newSearchTerms, HttpStatus.OK);
+    }
+
+    @GetMapping("/clearNewSearchTerms")
+    public ResponseEntity<ArrayList<String>> clearNewSearchTerms() {
+        newSearchTerms = new ArrayList<>();
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @GetMapping("/topSearchTerms")

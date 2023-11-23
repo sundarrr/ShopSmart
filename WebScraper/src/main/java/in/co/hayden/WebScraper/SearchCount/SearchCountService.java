@@ -34,6 +34,10 @@ public class SearchCountService {
         return searchCountRepository.findAll();
     }
 
+    public boolean isSearchCountPresent(String searchTerm){
+        Optional<SearchCount> existingSearchCountOptional = searchCountRepository.findBySearchTerm(searchTerm);
+        return existingSearchCountOptional.isPresent();
+    }
     public SearchCount insertSearchCount(String searchTerm){
         Optional<SearchCount> existingSearchCountOptional = searchCountRepository.findBySearchTerm(searchTerm);
         if (existingSearchCountOptional.isPresent()) {
