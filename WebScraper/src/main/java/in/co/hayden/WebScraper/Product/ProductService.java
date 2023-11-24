@@ -35,7 +35,17 @@ public class ProductService {
         }
 
         public Set<Product> getProducts(String query) {
-            return index.getOrDefault(query.toLowerCase(), new HashSet<>());
+            HashSet<Product> resultSet = new HashSet<>();
+            for(String s: query.split(" ")){
+                HashSet<Product> tempSet = (HashSet<Product>) index.getOrDefault(s.toLowerCase(), new HashSet<>());
+                if(resultSet.size() == 0){
+                    resultSet = tempSet;
+                }
+                else{
+                    resultSet.retainAll(tempSet);
+                }
+            }
+            return resultSet;
         }
 
 
@@ -88,13 +98,11 @@ public class ProductService {
     // Method to extract the store name from the URL
     private String extractStoreName(Product p, String product) {
         String url = p.productURL.toLowerCase();
-        String pName = p.productName.toLowerCase();
-        if (url.contains("zehrs") && pName.contains(product)) {
-            System.out.println(url + " " + pName);
+        if (url.contains("zehrs")) {
             return "zehrs";
-        } else if (url.contains("metro")  && pName.contains(product)) {
+        } else if (url.contains("metro")) {
             return "metro";
-        } else if (url.contains("nofrills")  && pName.contains(product)) {
+        } else if (url.contains("nofrills") ) {
             return "nofrills";
         } else {
             return null; // Return null if the URL doesn't match any of the specified stores and product
@@ -102,8 +110,9 @@ public class ProductService {
     }
     
     public TreeMap<String, Integer> processUrls(List<Product> products,String productSearch) {
-        System.out.println(productSearch);
+//        System.out.println(productSearch);
         // TreeMap to store key-value pairs (String -> Integer)
+
         TreeMap<String, Integer> store = new TreeMap<>();
         store.put("zehrs",0);
         store.put("metro",0);
