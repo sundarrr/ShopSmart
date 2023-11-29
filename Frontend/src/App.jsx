@@ -37,6 +37,30 @@ function App() {
   };
 
 
+const incrementProductClickCount = async (index, productName, productURL) => {
+  window.open(productURL, '_blank');
+
+  try {
+    const response = await fetch(serverURL + 'incrementproductclickcount', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:productName,
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const temp = [...filteredProducts];
+    temp[index].productClickCount += 1;
+    setFilteredProducts(temp)
+    // fetchData();
+    
+  } catch (error) {
+    console.error('Error incrementing search count:', error.message);
+  }
+};
 
   // Get all products data and set it to products and filtered products (to show all products  in the start)
   const fetchData = async () => {
@@ -156,7 +180,7 @@ function App() {
 
   const fetchSuggestionsDebounced = _.debounce((inputValue) => {
     fetchSuggestions(inputValue.toLowerCase());
-  }, 300);
+  }, 500);
 
   const handleSearchChange = (event) => {
     const inputValue = event.target.value;
@@ -274,7 +298,9 @@ function App() {
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
       {filteredProducts.map((product, index) => (
         <CustomCard
+          incrementProductClickCount={incrementProductClickCount}
           key={index}
+          index={index}
           productName={product.productName}
           productSellingPrice={product.productSellingPrice}
           productComparisonDetails={product.productComparisonDetails}

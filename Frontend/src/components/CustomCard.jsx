@@ -9,29 +9,8 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import {serverURL} from '../constants'
 
 const isSmallScreen = window.innerWidth <= 600;
-function CustomCard({productThumbnail, productName, productSellingPrice, productComparisonDetails, onButtonClick, productClickCount, dateScraped, productURL, fetchData}){
-      // Called on clicking view button  (products array is recreated post this)
-  const incrementProductClickCount = async (productName, productURL) => {
-    window.open(productURL, '_blank');
+function CustomCard({incrementProductClickCount, index, productThumbnail, productName, productSellingPrice, productComparisonDetails, onButtonClick, productClickCount, dateScraped, productURL, fetchData}){
 
-    try {
-      const response = await fetch(serverURL + 'incrementproductclickcount', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body:productName,
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      fetchData();
-      
-    } catch (error) {
-      console.error('Error incrementing search count:', error.message);
-    }
-  };
     
     return (<Card  style={isSmallScreen ? { width: '100%' }: { width: '33%' }}>
       <CardContent style={{ textAlign: 'center' }}>
@@ -48,7 +27,7 @@ function CustomCard({productThumbnail, productName, productSellingPrice, product
         <Typography variant="body3" color="text.secondary">
           Comparison Details: {dateScraped}
         </Typography>
-        <Button variant="contained" fullWidth onClick={() => incrementProductClickCount(productName, productURL)}>
+        <Button variant="contained" fullWidth onClick={() => incrementProductClickCount(index, productName, productURL)}>
           View :{productClickCount}
         </Button>
       </CardContent>
