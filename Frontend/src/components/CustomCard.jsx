@@ -16,7 +16,7 @@ function CustomCard({incrementProductClickCount, index, productThumbnail, produc
       <CardContent style={{ textAlign: 'center' }}>
         <img src={productThumbnail} alt="Product Thumbnail"  />
         <Typography variant="h5" component="div">
-          {productName}
+          {productName.split("-")[1]}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Selling Price: {productSellingPrice}

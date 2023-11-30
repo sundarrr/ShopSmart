@@ -296,7 +296,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     </div>
     <div  style={{...{ display:'flex',flexWrap: 'wrap'},...{ flexDirection: isSmallScreen ? 'column' : 'row'}}}>
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
-      {filteredProducts.map((product, index) => (
+      {filteredProducts.slice(0, 100).map((product, index) => (
         <CustomCard
           incrementProductClickCount={incrementProductClickCount}
           key={index}
