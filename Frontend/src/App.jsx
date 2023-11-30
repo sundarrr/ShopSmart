@@ -29,7 +29,6 @@ function App() {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      console.log("ASDF",data)
       setFilteredProducts(data);
     } catch (error) {
 
@@ -154,7 +153,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
   // called everytime user searches something or products array changes
   useEffect(() => {
-    console.log("final search value updated")
     setSearchValue(finalSearchValue)
     onEveryValidSearch(finalSearchValue);
   }, [finalSearchValue]);
@@ -186,7 +184,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     if(inputValue != "")
     {
       fetchSuggestionsDebounced(inputValue.toLowerCase())
-      console.log("checking for suggestion change with the term " + inputValue);
     }
     else{
       setSuggestions([])
