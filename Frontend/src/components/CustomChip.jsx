@@ -40,6 +40,7 @@ function CustomChip({setFinalSearchValue, finalSearchValue}){
   };
 
   useEffect(() => {
+    console.log("updated search term")
     setTimeout(getSearchTerms, 500)
   },[finalSearchValue])
   
