@@ -2,10 +2,7 @@ package in.co.hayden.WebScraper.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+
 import java.util.*;
 
 @Service
@@ -130,15 +127,22 @@ public class ProductService {
         return store;
     }
 
-    public List<Product> pageRank(){
-        List<Product> temp =  productRepository.findAll();
+    public List<Product> pageRank() {
+        List<Product> temp = productRepository.findAll();
         PageRankAVLTree prs = new PageRankAVLTree();
-        for(int i=0;i<temp.size();i++)
-        {
-            prs.insert(temp.get(i));
-            //System.out.println(temp.get(i).productName+"     "+temp.get(i).productClickCount);
+
+
+        // Convert comparison details to double and update click count
+        for (Product product : temp) {
+            System.out.print(product.productName+"  ");
+            product.setProductComparisonDetails(product.getProductComparisonDetails());
+            System.out.println();
+            prs.insert(product);
         }
-        temp=prs.getPageRank();
+
+        // Sort products based on the converted comparison details as double values
+       // temp.sort(Comparator.comparingDouble(product -> Double.parseDouble(product.getProductComparisonDetails())));
+        temp =  prs.getPageRank();
         return temp;
     }
 }
