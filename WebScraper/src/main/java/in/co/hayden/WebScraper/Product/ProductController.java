@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:5173", "https://webscraper.hayden.co.in/" })
@@ -119,8 +116,12 @@ public class ProductController {
         for (String w : words) {
             t.insert(w);
         }
+        List<String> outputList = t.autocomplete(input);
+        if (Objects.equals(outputList.get(0), input)){
+            outputList.remove(0);
+        }
 
-        return new ResponseEntity<List<String>>(t.autocomplete(input), HttpStatus.OK);
+        return new ResponseEntity<List<String>>(outputList, HttpStatus.OK);
     }
 //    @GetMapping("/test/{input}")
 //    public ResponseEntity<String> test(@PathVariable String input) {
