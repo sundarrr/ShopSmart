@@ -1,3 +1,5 @@
+
+
 package in.co.hayden.WebScraper.Product;
 
 import lombok.AllArgsConstructor;
@@ -10,11 +12,13 @@ import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
-@AllArgsConstructor
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "products")
 public class Product {
     @Id
@@ -30,7 +34,7 @@ public class Product {
         this.productName = productName;
         this.productSellingPrice = productSellingPrice;
         this.productThumbnail = productThumbnail;
-        this.productComparisonDetails = productComparisonDetails;
+        this.setProductComparisonDetails(productComparisonDetails); // Convert and set comparison details
         this.productURL = productURL;
         this.productClickCount = 0;
     }

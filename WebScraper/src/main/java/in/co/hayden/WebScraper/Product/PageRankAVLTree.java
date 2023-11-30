@@ -1,71 +1,28 @@
 package in.co.hayden.WebScraper.Product;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
-class Node {
-    Product data;
-    Node left, right;
-    int height;
-
-    Node(Product product) {
-        this.data = product;
-        this.height = 1;
-    }
-}
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PageRankAVLTree {
+
     private Node root;
-
-    private int height(Node node) {
-        if (node == null) {
-            return 0;
-        }
-        return node.height;
-    }
-
-    private int getBalance(Node node) {
-        if (node == null) {
-            return 0;
-        }
-        return height(node.left) - height(node.right);
-    }
-
-    private Node rightRotate(Node y) {
-        if (y == null || y.left == null) {
-            return y;
-        }
-
-        Node x = y.left;
-        Node T2 = x.right;
-
-        x.right = y;
-        y.left = T2;
-
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
-
-        return x;
-    }
-
-    private Node leftRotate(Node x) {
-        if (x == null || x.right == null) {
-            return x;
-        }
-
-        Node y = x.right;
-        Node T2 = y.left;
-
-        y.left = x;
-        x.right = T2;
-
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
-
-        return y;
-    }
 
     public void insert(Product product) {
         root = insert(root, product);
+    }
+
+    public List<Product> getPageRank() {
+        List<Product> pageRankList = new ArrayList<>();
+        inOrderTraversal(root, pageRankList);
+        return reverseList(pageRankList);
+    }
+
+    public void clear() {
+        root = null;
     }
 
     private Node insert(Node node, Product product) {
@@ -73,63 +30,123 @@ public class PageRankAVLTree {
             return new Node(product);
         }
 
-        if (product.getProductClickCount() < node.data.getProductClickCount() ||
-                (product.getProductClickCount() == node.data.getProductClickCount() &&
-                        product.getProductName().compareTo(node.data.getProductName()) < 0)) {
-            node.left = insert(node.left, product);
-        } else if (product.getProductClickCount() > node.data.getProductClickCount() ||
-                (product.getProductClickCount() == node.data.getProductClickCount() &&
-                        product.getProductName().compareTo(node.data.getProductName()) > 0)) {
-            node.right = insert(node.right, product);
+        int compareResult = Integer.compare(product.getProductClickCount(), node.getProduct().getProductClickCount());
+
+        if (compareResult < 0) {
+            node.setLeft(insert(node.getLeft(), product));
+        } else if (compareResult > 0) {
+            node.setRight(insert(node.getRight(), product));
         } else {
-            // Handle cases where both click counts and product names are equal
-            // You can define your logic here
+            node.getProductList().add(product);
         }
 
-        node.height = 1 + Math.max(height(node.left), height(node.right));
+        updateHeightAndBalance(node);
 
-        int balance = getBalance(node);
+        return balance(node);
+    }
 
-        // Left Left Case
-        if (balance > 1 && product.getProductClickCount() < node.left.data.getProductClickCount()) {
-            return rightRotate(node);
+    private List<Product> reverseList(List<Product> list) {
+        List<Product> reversedList = new ArrayList<>();
+        for (int i = list.size() - 1; i >= 0; i--) {
+            reversedList.add(list.get(i));
+        }
+        return reversedList;
+    }
+
+    private void inOrderTraversal(Node node, List<Product> result) {
+        if (node != null) {
+            inOrderTraversal(node.getLeft(), result);
+            result.addAll(node.getProductList());
+            inOrderTraversal(node.getRight(), result);
+        }
+    }
+
+    private Node balance(Node node) {
+        int balanceFactor = getBalanceFactor(node);
+
+        if (balanceFactor > 1) {
+            if (getBalanceFactor(node.getRight()) < 0) {
+                node.setRight(rotateRight(node.getRight()));
+            }
+            return rotateLeft(node);
         }
 
-        // Right Right Case
-        if (balance < -1 && product.getProductClickCount() > node.right.data.getProductClickCount()) {
-            return leftRotate(node);
-        }
-
-        // Left Right Case
-        if (balance > 1 && product.getProductClickCount() > node.left.data.getProductClickCount()) {
-            node.left = leftRotate(node.left);
-            return rightRotate(node);
-        }
-
-        // Right Left Case
-        if (balance < -1 && product.getProductClickCount() < node.right.data.getProductClickCount()) {
-            node.right = rightRotate(node.right);
-            return leftRotate(node);
+        if (balanceFactor < -1) {
+            if (getBalanceFactor(node.getLeft()) > 0) {
+                node.setLeft(rotateLeft(node.getLeft()));
+            }
+            return rotateRight(node);
         }
 
         return node;
     }
 
-    private void inorder(Node root, ArrayList<Product> result) {
-        if (root != null) {
-            inorder(root.left, result);
-            result.add(root.data);
-            inorder(root.right, result);
-        }
+    private Node rotateRight(Node y) {
+        // Rotation logic
+        return y;
     }
 
-    public ArrayList<Product> getPageRank() {
-        ArrayList<Product> result = new ArrayList<>();
-        inorder(root, result);
+    private Node rotateLeft(Node x) {
+        // Rotation logic
+        return x;
+    }
 
-        // Reverse the result list
-        Collections.reverse(result);
+    private int getBalanceFactor(Node node) {
+        return getHeight(node.getRight()) - getHeight(node.getLeft());
+    }
 
-        return result;
+    private void updateHeightAndBalance(Node node) {
+        node.setHeight(1 + Math.max(getHeight(node.getLeft()), getHeight(node.getRight())));
+    }
+
+    private int getHeight(Node node) {
+        return node == null ? 0 : node.getHeight();
+    }
+
+    private static class Node {
+        private Product product;
+        private Node left;
+        private Node right;
+        private int height;
+        private List<Product> productList;
+
+        public Node(Product product) {
+            this.product = product;
+            this.height = 1;
+            this.productList = new LinkedList<>();
+            this.productList.add(product);
+        }
+
+        public Product getProduct() {
+            return product;
+        }
+
+        public void setLeft(Node left) {
+            this.left = left;
+        }
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public void setRight(Node right) {
+            this.right = right;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        public List<Product> getProductList() {
+            return productList;
+        }
     }
 }

@@ -94,16 +94,22 @@ public class ProductController {
 
     @GetMapping("/")
     public ResponseEntity<List<Product>> getAllProducts() {
-        System.out.println(productService.allProduct().get(0).productClickCount);
-       // productService.pageRank();
-        return new ResponseEntity<List<Product>>(productService.pageRank(), HttpStatus.OK);
+      //  System.out.println(productService.allProduct().get(0).productClickCount);
+       //productService.pageRank(productService.allProduct());
+        return new ResponseEntity<List<Product>>(productService.pageRank(productService.allProduct()), HttpStatus.OK);
     }
 
     @GetMapping("/counturl/{fooditem}")
     public ResponseEntity<TreeMap<String, Integer>> getSystemUrlCount(@PathVariable String fooditem) {
     	List<Product> p = productService.getProductsByName(fooditem);
         TreeMap<String, Integer> result = productService.processUrls(p, fooditem);
-        // System.out.println("Key-Value Pairs: " + result);
+     //   System.out.println("Using KMP algorithm Key-Value Pairs: " + result);
+
+
+        for(int i=0;i<p.size();i++)
+        {
+           // System.out.println(p.get(i).productName+"   "+p.get(i).productSellingPrice);
+        }
 
         return new ResponseEntity<TreeMap<String, Integer>>(result, HttpStatus.OK);
     }
@@ -126,6 +132,6 @@ public class ProductController {
 
     @GetMapping("/getProductsByName/{input}")
     public ResponseEntity<List<Product>> getProductsByName(@PathVariable String input) {
-        return new ResponseEntity<List<Product>>(productService.getProductsByName(input), HttpStatus.OK);
+        return new ResponseEntity<List<Product>>(productService.pageRank(productService.getProductsByName(input)), HttpStatus.OK);
     }
 }
