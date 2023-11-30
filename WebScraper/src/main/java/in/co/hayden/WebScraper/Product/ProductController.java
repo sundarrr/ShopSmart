@@ -123,28 +123,6 @@ public class ProductController {
 
         return new ResponseEntity<List<String>>(outputList, HttpStatus.OK);
     }
-//    @GetMapping("/test/{input}")
-//    public ResponseEntity<String> test(@PathVariable String input) {
-//        // Sample list of products
-//        List<Product> productList = productService.allProduct();// Add more products as needed
-//
-//
-//        InvertedIndex invertedIndex = new InvertedIndex();
-//        invertedIndex.buildIndex(productList);
-//
-//        // Search for products based on a query
-//        Set<Product> laptopProducts = invertedIndex.getProducts("eggs");
-//        Set<Product> smartphoneProducts = invertedIndex.getProducts("milk");
-//
-//        // Print the results
-//        System.out.println("Products with 'laptop' in the name:");
-//        laptopProducts.forEach(product -> System.out.println(product.getProductName()));
-//
-//        System.out.println("\nProducts with 'smartphone' in the name:");
-//        smartphoneProducts.forEach(product -> System.out.println(product.getProductName()));
-//
-//        return new ResponseEntity<List<>>("ASf",HttpStatus.OK);
-//    }
 
     @GetMapping("/getProductsByName/{input}")
     public ResponseEntity<List<Product>> getProductsByName(@PathVariable String input) {

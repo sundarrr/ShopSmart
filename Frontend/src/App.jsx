@@ -106,9 +106,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
       setFilteredProducts(products);
       return
     }
-      // const filtered = products.filter(product =>
-      //     product.productName.toLowerCase().includes(searchTerm.toLowerCase()))
-      // setFilteredProducts(filtered);
     
       fetchFilteredProducts(searchTerm.toLowerCase())
 
@@ -199,8 +196,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      // onEveryValidSearch(searchValue)
-      // setSearchValue("")
       setFinalSearchValue(searchValue)
       fetchSuggestionsDebounced.cancel()
       setSuggestions([]);
