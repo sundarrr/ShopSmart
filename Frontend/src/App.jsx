@@ -88,7 +88,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
   const handleDidYouMeanClick = (suggestion) => {
     // Set the selected suggestion as the query
     setFinalSearchValue(suggestion);
-    // onEveryValidSearch(suggestion);
     // Clear suggestions
     setSuggestions([]);
   };
@@ -96,7 +95,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
   const handleSuggestionClick = (suggestion) => {
     // Set the selected suggestion as the query
     setFinalSearchValue(suggestion);
-    // onEveryValidSearch(suggestion);
     // Clear suggestions
     setSuggestions([]);
   };
@@ -134,7 +132,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
       }
 
-
+      console.log("Adding to search Count "  + searchTerm )
       const response = await fetch(serverURL + 'searchCount', {
         method: 'POST',
         headers: {
@@ -147,7 +145,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      // setUpdateCommonWords(searchTerm)
     } catch (error) {
       console.error('Error incrementing search count:', error.message);
     }
@@ -206,9 +203,8 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      // Call your function here
       onEveryValidSearch(searchValue)
-      setFinalSearchValue(searchValue)
+      // setFinalSearchValue(searchValue)
       setSuggestions([]);
     }
   };
