@@ -4,7 +4,6 @@ pip fruit
 other vegetables
 rolls
 buns
-pot plants
 citrus fruit
 beef
 frankfurter
@@ -75,11 +74,8 @@ baking powder
 specialty cheese
 salty snack
 instant food products
-pet care
 white bread
-soap
 frozen chicken
-house keeping products
 spread cheese
 frozen dessert
 vinegar
@@ -100,8 +96,6 @@ waffles
 sauces
 rum
 chocolate marshmallow
-long life bakery product
-bags
 sweet spreads
 soups
 mustard
@@ -115,14 +109,10 @@ cereals
 meat spreads
 tidbits
 cooking chocolate
-seasonal products
 liqueur
-abrasive cleaner
 syrup
 ketchup
 cream
-skin care
-rubbing alcohol
 nut snack
 cocoa drinks
 softener
@@ -141,6 +131,9 @@ milk
 apples
 bananas
 oranges
+apple
+banana
+orange
 bread
 eggs
 cereal
