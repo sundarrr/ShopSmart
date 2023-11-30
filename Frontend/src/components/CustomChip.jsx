@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-
 import {serverURL} from '../constants'
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
@@ -33,13 +32,13 @@ function CustomChip({setFinalSearchValue, finalSearchValue}){
       }
 
       const data = await response.json();
-      // setSearchDropDownOptions(data)
     } catch (error) {
       setError(error);
     }
   };
 
   useEffect(() => {
+    console.log("updated search term")
     setTimeout(getSearchTerms, 500)
   },[finalSearchValue])
   

@@ -1,12 +1,8 @@
-import { useState } from 'react'
-
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button } from '@mui/material';
 
-import {serverURL} from '../constants'
 
 const isSmallScreen = window.innerWidth <= 600;
 function CustomCard({incrementProductClickCount, index, productThumbnail, productName, productSellingPrice, productComparisonDetails, onButtonClick, productClickCount, dateScraped, productURL, fetchData}){

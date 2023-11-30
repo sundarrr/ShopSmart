@@ -106,9 +106,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
       setFilteredProducts(products);
       return
     }
-      // const filtered = products.filter(product =>
-      //     product.productName.toLowerCase().includes(searchTerm.toLowerCase()))
-      // setFilteredProducts(filtered);
     
       fetchFilteredProducts(searchTerm.toLowerCase())
 
@@ -131,7 +128,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
       }
 
-      console.log("Adding to search Count "  + searchTerm )
       const response = await fetch(serverURL + 'searchCount', {
         method: 'POST',
         headers: {
@@ -175,7 +171,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
   const fetchSuggestionsDebounced = _.debounce((inputValue) => {
     fetchSuggestions(inputValue.toLowerCase());
-  }, 500);
+  }, 800);
 
   const handleSearchChange = (event) => {
     const inputValue = event.target.value;
@@ -200,8 +196,8 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      onEveryValidSearch(searchValue)
-      // setFinalSearchValue(searchValue)
+      setFinalSearchValue(searchValue)
+      fetchSuggestionsDebounced.cancel()
       setSuggestions([]);
     }
   };
