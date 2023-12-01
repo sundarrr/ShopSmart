@@ -8,7 +8,7 @@ import java.util.*;
 @Service
 public class ProductService {
 
-    //    Inverted Index
+    // Inverted Index
     static class InvertedIndex {
 
         private Map<String, Set<Product>> index;
@@ -21,7 +21,8 @@ public class ProductService {
             for (Product product : productList) {
                 String productName = product.getProductName().toLowerCase();
 
-                // Split the product name into individual words (you might want to improve this based on your needs)
+                // Split the product name into individual words (you might want to improve this
+                // based on your needs)
                 String[] words = productName.split("\\s+");
                 for (String word : words) {
                     word = word.toLowerCase();
@@ -33,93 +34,91 @@ public class ProductService {
 
         public Set<Product> getProducts(String query) {
             HashSet<Product> resultSet = new HashSet<>();
-            for(String s: query.split(" ")){
+            for (String s : query.split(" ")) {
                 HashSet<Product> tempSet = (HashSet<Product>) index.getOrDefault(s.toLowerCase(), new HashSet<>());
-                if(resultSet.size() == 0){
+                if (resultSet.size() == 0) {
                     resultSet = tempSet;
-                }
-                else{
+                } else {
                     resultSet.retainAll(tempSet);
                 }
             }
             return resultSet;
         }
 
-
     }
 
-    //    Inverted Index end
+    // Inverted Index end
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Product> allProduct(){
+    public List<Product> allProduct() {
         return productRepository.findAll();
     }
 
-
-    public List<Product> getProductsByName(String query){
+    public List<Product> getProductsByName(String query) {
         List<Product> productList = productRepository.findAll();// Add more products as needed
         InvertedIndex invertedIndex = new InvertedIndex();
         invertedIndex.buildIndex(productRepository.findAll());
         return List.copyOf(invertedIndex.getProducts(query));
     }
 
-    public Product insertProduct(Product p){
+    public Product insertProduct(Product p) {
         productRepository.insert(p);
         return p;
     }
 
-    public Optional<Product> findbyname(String name){
-         return productRepository.findProductByProductName(name);
+    public Optional<Product> findbyname(String name) {
+        return productRepository.findProductByProductName(name);
     }
 
-    public Optional<Product> deleteProduct(String name){
+    public Optional<Product> deleteProduct(String name) {
         return productRepository.deleteProductByProductName(name);
     }
 
-    public Product updateProductName(String name, String newName){
-    Product temp = productRepository.findProductByProductName(name).get();
-    temp.setProductName(newName);
-    return productRepository.save(temp);
+    public Product updateProductName(String name, String newName) {
+        Product temp = productRepository.findProductByProductName(name).get();
+        temp.setProductName(newName);
+        return productRepository.save(temp);
     }
-    public Product incrementSearchCount(String name){
+
+    public Product incrementSearchCount(String name) {
 
         System.out.println(name);
         Product temp = productRepository.findFirstByProductName(name);
         temp.setProductClickCount(temp.productClickCount + 1);
-        //PageRankAVLTree prs = new PageRankAVLTree();
-        //prs.updateClickCount(temp.productName,temp.productClickCount);
+        // PageRankAVLTree prs = new PageRankAVLTree();
+        // prs.updateClickCount(temp.productName,temp.productClickCount);
         return productRepository.save(temp);
     }
 
     // Method to extract the store name from the URL
     private String extractStoreName(Product p, String product) {
         String url = p.productURL.toLowerCase();
-        if (PatternFindingKMPAlgorithm.search(url,"zehrs")) {
+        if (PatternFindingKMPAlgorithm.search(url, "zehrs")) {
             return "zehrs";
-        } else if (PatternFindingKMPAlgorithm.search(url,"metro")) {
+        } else if (PatternFindingKMPAlgorithm.search(url, "metro")) {
             return "metro";
-        } else if (PatternFindingKMPAlgorithm.search(url,"nofrills")) {
+        } else if (PatternFindingKMPAlgorithm.search(url, "nofrills")) {
             return "nofrills";
         } else {
             return null; // Return null if the URL doesn't match any of the specified stores and product
         }
     }
 
-    public TreeMap<String, Integer> processUrls(List<Product> products,String productSearch) {
-//        System.out.println(productSearch);
+    public TreeMap<String, Integer> processUrls(List<Product> products, String productSearch) {
+        // System.out.println(productSearch);
         // TreeMap to store key-value pairs (String -> Integer)
 
         TreeMap<String, Integer> store = new TreeMap<>();
-        store.put("zehrs",0);
-        store.put("metro",0);
-        store.put("nofrills",0);
+        store.put("zehrs", 0);
+        store.put("metro", 0);
+        store.put("nofrills", 0);
         // Loop through the URLs
         for (Product p : products) {
             // Extract the store name and product type (e.g., "eggs") from the URL
-            String storeName = extractStoreName(p,productSearch.toLowerCase());
+            String storeName = extractStoreName(p, productSearch.toLowerCase());
             if (storeName != null) {
-//            	System.out.println(storeName);
+                // System.out.println(storeName);
                 store.put(storeName, store.getOrDefault(storeName, 0) + 1);
             }
         }
@@ -127,20 +126,35 @@ public class ProductService {
         return store;
     }
 
-    public List<Product> pageRank(List <Product> temp) {
+    public List<Product> pageRank(List<Product> temp) {
+        // List<Product> temp = productRepository.findAll();
         PageRankAVLTree prs = new PageRankAVLTree();
 
+        BestDealBST bst = new BestDealBST();
 
         List<Product> compare = temp;
         // Convert comparison details to double and update click count
         for (Product product : compare) {
+            // System.out.print(product.productName+" ");
             product.setProductComparisonDetails(product.getProductComparisonDetails());
+            System.out.println(product.productName + "  " + product.productComparisonDetails);
+            bst.insert(product);
+            // System.out.println();
+
         }
         for (Product product : temp) {
             prs.insert(product);
         }
-        temp =  prs.getPageRank();
+
+        System.out.println("best deal is " + bst.getBestDeal().getProductName() + " Selling Price ="
+                + bst.getBestDeal().getProductSellingPrice() + " Comparison Details = "
+                + bst.getBestDeal().getProductComparisonDetails());
+        // Sort products based on the converted comparison details as double values
+        // temp.sort(Comparator.comparingDouble(product ->
+        // Double.parseDouble(product.getProductComparisonDetails())));
+        temp = prs.getPageRank();
         prs.clear();
         return temp;
     }
+
 }
