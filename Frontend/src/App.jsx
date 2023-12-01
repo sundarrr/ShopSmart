@@ -53,6 +53,8 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     }
     const temp = [...filteredProducts];
     temp[index].productClickCount += 1;
+    temp.sort((a, b) => b.productClickCount - a.productClickCount);
+    
     setFilteredProducts(temp)
     // fetchData();
     
