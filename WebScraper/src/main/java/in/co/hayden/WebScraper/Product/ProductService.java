@@ -2,10 +2,7 @@ package in.co.hayden.WebScraper.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+
 import java.util.*;
 
 @Service
@@ -90,25 +87,25 @@ public class ProductService {
         System.out.println(name);
         Product temp = productRepository.findFirstByProductName(name);
         temp.setProductClickCount(temp.productClickCount + 1);
-        PageRankAVLTree prs = new PageRankAVLTree();
+        //PageRankAVLTree prs = new PageRankAVLTree();
         //prs.updateClickCount(temp.productName,temp.productClickCount);
         return productRepository.save(temp);
     }
-    
+
     // Method to extract the store name from the URL
     private String extractStoreName(Product p, String product) {
         String url = p.productURL.toLowerCase();
-        if (url.contains("zehrs")) {
+        if (PatternFindingKMPAlgorithm.search(url,"zehrs")) {
             return "zehrs";
-        } else if (url.contains("metro")) {
+        } else if (PatternFindingKMPAlgorithm.search(url,"metro")) {
             return "metro";
-        } else if (url.contains("nofrills") ) {
+        } else if (PatternFindingKMPAlgorithm.search(url,"nofrills")) {
             return "nofrills";
         } else {
             return null; // Return null if the URL doesn't match any of the specified stores and product
         }
     }
-    
+
     public TreeMap<String, Integer> processUrls(List<Product> products,String productSearch) {
 //        System.out.println(productSearch);
         // TreeMap to store key-value pairs (String -> Integer)
@@ -130,15 +127,20 @@ public class ProductService {
         return store;
     }
 
-    public List<Product> pageRank(){
-        List<Product> temp =  productRepository.findAll();
+    public List<Product> pageRank(List <Product> temp) {
         PageRankAVLTree prs = new PageRankAVLTree();
-        for(int i=0;i<temp.size();i++)
-        {
-            prs.insert(temp.get(i));
-            //System.out.println(temp.get(i).productName+"     "+temp.get(i).productClickCount);
+
+
+        List<Product> compare = temp;
+        // Convert comparison details to double and update click count
+        for (Product product : compare) {
+            product.setProductComparisonDetails(product.getProductComparisonDetails());
         }
-        temp=prs.getPageRank();
+        for (Product product : temp) {
+            prs.insert(product);
+        }
+        temp =  prs.getPageRank();
+        prs.clear();
         return temp;
     }
 }
