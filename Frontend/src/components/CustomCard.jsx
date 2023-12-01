@@ -17,11 +17,8 @@ function CustomCard({incrementProductClickCount, index, productThumbnail, produc
         <Typography variant="body2" color="text.secondary">
           Selling Price: {productSellingPrice}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Comparison Details: {productComparisonDetails}
-        </Typography>
         <Typography variant="body3" color="text.secondary">
-          Comparison Details: {dateScraped}
+          Date: {dateScraped}
         </Typography>
         <Button variant="contained" fullWidth onClick={() => incrementProductClickCount(index, productName, productURL)}>
           View :{productClickCount}
