@@ -38,6 +38,7 @@ function App() {
 
 
 const incrementProductClickCount = async (index, productName, productURL) => {
+  console.log("INDEX", index)
   window.open(productURL, '_blank');
   try {
     const response = await fetch(serverURL + 'incrementproductclickcount', {
@@ -51,11 +52,14 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    const newIdx = filteredProducts.findIndex(product => product.productName === productName);
+    let newIdx = filteredProducts.findIndex(product => product.productName === productName);
+    if(index != -1){
+      newIdx = index
+    }
     const temp = [...filteredProducts];
     temp[newIdx].productClickCount += 1;
     temp.sort((a, b) => b.productClickCount - a.productClickCount);
-    if(bestDeal){
+    if(index == -1){
       bestDeal.productClickCount += 1;
     }
     setFilteredProducts(temp)
@@ -322,6 +326,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
           productClickCount = {bestDeal.productClickCount}
           fetchData={fetchData}
           dateScraped = {bestDeal.id.date}
+          index={-1}
         />
       }
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
