@@ -9,7 +9,6 @@ function CustomCard({bestDeal, incrementProductClickCount, index, productThumbna
 
     const getCardStyle = () => {
       let style = isSmallScreen ? { width: '100%'}: { width: '32%', margin:'10px' }
-      console.log(bestDeal)
       if(bestDeal){
         style.boxShadow = '0 0 20px rgba(173, 216, 230, 0.9)'
       }
@@ -33,7 +32,9 @@ function CustomCard({bestDeal, incrementProductClickCount, index, productThumbna
               <></>} */}
         <img src={productThumbnail} alt="Product Thumbnail"  />
         <Typography variant="h5" component="div">
-          {productName.split("-")[1]}
+          {/* {productName.split("-")[1]} */}
+
+          {productName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Selling Price: {productSellingPrice}

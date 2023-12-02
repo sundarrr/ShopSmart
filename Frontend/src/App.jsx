@@ -39,7 +39,6 @@ function App() {
 
 const incrementProductClickCount = async (index, productName, productURL) => {
   window.open(productURL, '_blank');
-
   try {
     const response = await fetch(serverURL + 'incrementproductclickcount', {
       method: 'POST',
@@ -52,10 +51,13 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
+    const newIdx = filteredProducts.findIndex(product => product.productName === productName);
     const temp = [...filteredProducts];
-    temp[index].productClickCount += 1;
+    temp[newIdx].productClickCount += 1;
     temp.sort((a, b) => b.productClickCount - a.productClickCount);
-    
+    if(bestDeal){
+      bestDeal.productClickCount += 1;
+    }
     setFilteredProducts(temp)
     // fetchData();
     
@@ -124,8 +126,6 @@ const incrementProductClickCount = async (index, productName, productURL) => {
         const data = await response.json();
         setEditDistanceDidYouMean(data)
         if (data.length != 0){
-          // console.log("Not valid search");
-          // console.log(data)
           return
         }
       } catch (error) {
@@ -184,6 +184,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
       const data = await response.json();
       if (data.length != 0){  
           setbestDeal(data);
+          console.log("BEST DEAT", data)
         return
       }
 
