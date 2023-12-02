@@ -5,11 +5,32 @@ import { Button } from '@mui/material';
 
 
 const isSmallScreen = window.innerWidth <= 600;
-function CustomCard({incrementProductClickCount, index, productThumbnail, productName, productSellingPrice, productComparisonDetails, onButtonClick, productClickCount, dateScraped, productURL, fetchData}){
+function CustomCard({bestDeal, incrementProductClickCount, index, productThumbnail, productName, productSellingPrice, productComparisonDetails, onButtonClick, productClickCount, dateScraped, productURL, fetchData}){
 
+    const getCardStyle = () => {
+      let style = isSmallScreen ? { width: '100%'}: { width: '32%', margin:'10px' }
+      console.log(bestDeal)
+      if(bestDeal){
+        style.boxShadow = '0 0 20px rgba(173, 216, 230, 0.9)'
+      }
+      return style
+    }
     
-    return (<Card  style={isSmallScreen ? { width: '100%' }: { width: '33%' }}>
+    return (
+      
+    <Card  style={getCardStyle()} className='bestdeal'>
+      {bestDeal ?
+      <div className='slant-line'></div>
+      :<></>
+      }
+
       <CardContent style={{ textAlign: 'center' }}>
+        {/* {bestDeal ?
+                <Typography variant="h5" component="div" style={{backgroundColor:'red'}}>
+                Best Deal
+              </Typography>
+              :
+              <></>} */}
         <img src={productThumbnail} alt="Product Thumbnail"  />
         <Typography variant="h5" component="div">
           {productName.split("-")[1]}

@@ -71,3 +71,16 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+.bestdeal {
+  overflow: hidden;
+}
+
+.slant-line {
+  position: relative;
+  top: 2;
+  left: 2;
+  width: 4%;
+  height: 4%;
+  background: linear-gradient(to bottom right, transparent 49.5%, rgba(173, 216, 230, 0.7) 50%);
+  z-index: 100;
+}
