@@ -143,20 +143,27 @@ public class ProductService {
     public List<Product> pageRank(List<Product> productList) { 
         //Object is created for the class PageRANKAVLTree       
         PageRankAVLTree pagerank = new PageRankAVLTree();
+        for (Product product : productList) {
+            pagerank.insert(product);
+        }
+        productList = pagerank.getPageRank();
+        pagerank.clear();
+        return productList;
+    }
+
+    public Product getBestDeal(List<Product> productList)
+    {
         //Object is created for the class BestDealBST
         BestDealBST bestDeal = new BestDealBST();
         // Convert comparison details to double and update click count
         for (Product product : productList) {
             product.setProductComparisonDetails(product.getProductComparisonDetails());
             bestDeal.insert(product);
-            pagerank.insert(product);
         }
         System.out.println("best deal is " + bestDeal.getBestDeal().getProductName() + " Selling Price ="
                 + bestDeal.getBestDeal().getProductSellingPrice() + " Comparison Details = "
                 + bestDeal.getBestDeal().getProductComparisonDetails());
-        productList = pagerank.getPageRank();
-        pagerank.clear();
-        return productList;
+        return bestDeal.getBestDeal();
     }
 
 }

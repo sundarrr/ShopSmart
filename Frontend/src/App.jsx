@@ -15,6 +15,7 @@ function App() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [bestDeal, setbestDeal] = useState([]);
   // search component
   const [finalSearchValue, setFinalSearchValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
@@ -30,6 +31,7 @@ function App() {
       }
       const data = await response.json();
       setFilteredProducts(data);
+      setbestDeal(fetchBestDeal(searchTerm));
     } catch (error) {
 
     }
@@ -171,6 +173,26 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     }
   };
 
+
+  const fetchBestDeal = async (value) => {
+    try {
+      const response = await fetch(serverURL + 'getBestDeal/' + value);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      if (data.length != 0){  
+          console.log(data.productName);
+          setbestDeal(data);
+        return
+      }
+
+    } catch (error) {
+
+    }
+  };
+
   const fetchSuggestionsDebounced = _.debounce((inputValue) => {
     fetchSuggestions(inputValue.toLowerCase());
   }, 800);
@@ -284,6 +306,21 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     <div style={{  flexGrow:1}}>
 
     <CompanyStats finalSearchValue={finalSearchValue}></CompanyStats>
+    </div><div  style={{...{ display:'flex',flexWrap: 'wrap'},...{ flexDirection: isSmallScreen ? 'column' : 'row'}}}>
+      {bestDeal.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>No best deals</h3>: <></>}
+      {bestDeal => (
+        <CustomCard
+          incrementProductClickCount={incrementProductClickCount}
+          productName={bestDeal.productName}
+          productSellingPrice={bestDeal.productSellingPrice}
+          productComparisonDetails={bestDeal.productComparisonDetails}
+          productThumbnail={bestDeal.productThumbnail}
+          productURL={bestDeal.productURL}
+          productClickCount = {bestDeal.productClickCount}
+          fetchData={fetchData}
+          dateScraped = {bestDeal.id.date}
+        />
+      )}
     </div>
     <div  style={{...{ display:'flex',flexWrap: 'wrap'},...{ flexDirection: isSmallScreen ? 'column' : 'row'}}}>
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}

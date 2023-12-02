@@ -92,6 +92,11 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/getBestDeal/{input}")
+    public ResponseEntity<Product> getBestDeal(@PathVariable String input) {    
+        return new ResponseEntity<Product>(productService.getBestDeal(productService.getProductsByName(input)),HttpStatus.OK);
+    }
+
     @GetMapping("/")
     public ResponseEntity<List<Product>> getAllProducts() {
         //Page Ranks the products that are displayed in the home page
