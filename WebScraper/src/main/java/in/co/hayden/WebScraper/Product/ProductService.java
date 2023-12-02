@@ -144,9 +144,11 @@ public class ProductService {
         //Object is created for the class PageRANKAVLTree       
         PageRankAVLTree pagerank = new PageRankAVLTree();
         for (Product product : productList) {
+            //All the products are inserted 
             pagerank.insert(product);
         }
         productList = pagerank.getPageRank();
+        //AVL Tree is cleared for future use
         pagerank.clear();
         return productList;
     }
