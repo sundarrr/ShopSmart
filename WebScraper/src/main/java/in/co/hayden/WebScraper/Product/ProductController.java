@@ -94,8 +94,7 @@ public class ProductController {
 
     @GetMapping("/")
     public ResponseEntity<List<Product>> getAllProducts() {
-      //  System.out.println(productService.allProduct().get(0).productClickCount);
-       //productService.pageRank(productService.allProduct());
+        //Page Ranks the products that are displayed in the home page
         return new ResponseEntity<List<Product>>(productService.pageRank(productService.allProduct()), HttpStatus.OK);
     }
 
@@ -132,6 +131,7 @@ public class ProductController {
 
     @GetMapping("/getProductsByName/{input}")
     public ResponseEntity<List<Product>> getProductsByName(@PathVariable String input) {
+       //Page Ranks the products that are searched by the user
         return new ResponseEntity<List<Product>>(productService.pageRank(productService.getProductsByName(input)), HttpStatus.OK);
     }
 }

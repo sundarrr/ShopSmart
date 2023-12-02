@@ -1,4 +1,7 @@
 package in.co.hayden.WebScraper.Product;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,11 +18,13 @@ public class PatternFindingKMPAlgorithm {
         }
     }
 
-    private static boolean containsPattern(String text, String pattern) {
-        Pattern compiledPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = compiledPattern.matcher(text);
-        return matcher.find();
+    public static boolean isValidUrl(String url) {
+        String urlRegex = "^(https?|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/[\\w.-]+\\?[^\\s]*\"[^\"]*\"[\\w\\-._~:/?#[@]!$&'()*+,;=]*$";
+        Pattern pattern = Pattern.compile(urlRegex);
+        Matcher matcher = pattern.matcher(url);
+        return matcher.matches();
     }
+    
 
     private static int[] computeLPSArray(String pattern) {
         int m = pattern.length();

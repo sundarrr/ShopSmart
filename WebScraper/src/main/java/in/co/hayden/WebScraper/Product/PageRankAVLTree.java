@@ -82,13 +82,37 @@ public class PageRankAVLTree {
     }
 
     private Node rotateRight(Node y) {
-        // Rotation logic
-        return y;
+        if (y == null || y.left == null) {
+            return y;
+        }
+
+        Node x = y.left;
+        Node T2 = x.right;
+
+        x.right = y;
+        y.left = T2;
+
+        y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
+        x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
+
+        return x;
     }
 
     private Node rotateLeft(Node x) {
-        // Rotation logic
-        return x;
+        if (x == null || x.right == null) {
+            return x;
+        }
+
+        Node y = x.right;
+        Node T2 = y.left;
+
+        y.left = x;
+        x.right = T2;
+
+        x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
+        y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
+
+        return y;
     }
 
     private int getBalanceFactor(Node node) {

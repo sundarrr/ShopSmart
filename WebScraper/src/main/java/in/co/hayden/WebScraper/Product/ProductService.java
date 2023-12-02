@@ -94,14 +94,28 @@ public class ProductService {
     // Method to extract the store name from the URL
     private String extractStoreName(Product p, String product) {
         String url = p.productURL.toLowerCase();
-        if (PatternFindingKMPAlgorithm.search(url, "zehrs")) {
-            return "zehrs";
-        } else if (PatternFindingKMPAlgorithm.search(url, "metro")) {
-            return "metro";
-        } else if (PatternFindingKMPAlgorithm.search(url, "nofrills")) {
-            return "nofrills";
-        } else {
-            return null; // Return null if the URL doesn't match any of the specified stores and product
+        try {
+            // Check if the URL is a valid website URL
+            if (!PatternFindingKMPAlgorithm.isValidUrl(url)) {
+                throw new IllegalArgumentException("Invalid URL: " + url);
+            }
+            // KMP algorithm used to check if the substring is present in the URL
+            if (PatternFindingKMPAlgorithm.search(url, "zehrs")) {
+                System.out.println("zehrs");
+                return "zehrs";
+            } else if (PatternFindingKMPAlgorithm.search(url, "metro")) {
+                System.out.println("metro");
+                return "metro";
+            } else if (PatternFindingKMPAlgorithm.search(url, "nofrills")) {
+                System.out.println("nofrills");
+                return "nofrills";
+            } else {
+                return null; // Return null if the URL doesn't match any of the specified stores and product
+            }
+        } catch (Exception e) {
+            // Handle the exception, e.g., log it or print an error message
+            System.err.println("Exception: " + e.getMessage());
+            return null;
         }
     }
 
@@ -126,35 +140,23 @@ public class ProductService {
         return store;
     }
 
-    public List<Product> pageRank(List<Product> temp) {
-        // List<Product> temp = productRepository.findAll();
-        PageRankAVLTree prs = new PageRankAVLTree();
-
-        BestDealBST bst = new BestDealBST();
-
-        List<Product> compare = temp;
+    public List<Product> pageRank(List<Product> productList) { 
+        //Object is created for the class PageRANKAVLTree       
+        PageRankAVLTree pagerank = new PageRankAVLTree();
+        //Object is created for the class BestDealBST
+        BestDealBST bestDeal = new BestDealBST();
         // Convert comparison details to double and update click count
-        for (Product product : compare) {
-            // System.out.print(product.productName+" ");
+        for (Product product : productList) {
             product.setProductComparisonDetails(product.getProductComparisonDetails());
-            System.out.println(product.productName + "  " + product.productComparisonDetails);
-            bst.insert(product);
-            // System.out.println();
-
+            bestDeal.insert(product);
+            pagerank.insert(product);
         }
-        for (Product product : temp) {
-            prs.insert(product);
-        }
-
-        System.out.println("best deal is " + bst.getBestDeal().getProductName() + " Selling Price ="
-                + bst.getBestDeal().getProductSellingPrice() + " Comparison Details = "
-                + bst.getBestDeal().getProductComparisonDetails());
-        // Sort products based on the converted comparison details as double values
-        // temp.sort(Comparator.comparingDouble(product ->
-        // Double.parseDouble(product.getProductComparisonDetails())));
-        temp = prs.getPageRank();
-        prs.clear();
-        return temp;
+        System.out.println("best deal is " + bestDeal.getBestDeal().getProductName() + " Selling Price ="
+                + bestDeal.getBestDeal().getProductSellingPrice() + " Comparison Details = "
+                + bestDeal.getBestDeal().getProductComparisonDetails());
+        productList = pagerank.getPageRank();
+        pagerank.clear();
+        return productList;
     }
 
 }
