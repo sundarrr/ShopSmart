@@ -330,7 +330,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
         />
       }
       {filteredProducts.length == 0 ? <h3 style={{color:"black", textAlign:'center', width:'100%'}}>Product Currently not available, please come back in an hour to find results</h3>: <></>}
-      {filteredProducts.slice(0, 100).map((product, index) => (
+      {filteredProducts.filter((product)=> product.productName != bestDeal.productName).slice(0, 100).map((product, index) => (
         <CustomCard
           bestDeal ={false}
           incrementProductClickCount={incrementProductClickCount}

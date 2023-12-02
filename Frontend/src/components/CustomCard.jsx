@@ -32,9 +32,9 @@ function CustomCard({bestDeal, incrementProductClickCount, index, productThumbna
               <></>} */}
         <img src={productThumbnail} alt="Product Thumbnail"  />
         <Typography variant="h5" component="div">
-          {/* {productName.split("-")[1]} */}
+          {productName.split("-")[1]}
 
-          {productName}
+          {/* {productName} */}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Selling Price: {productSellingPrice}
