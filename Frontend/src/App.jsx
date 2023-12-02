@@ -200,6 +200,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     const inputValue = event.target.value;
     setSearchValue(inputValue);
     fetchFilteredProducts(inputValue)
+    setbestDeal(false)
     if(inputValue != "")
     {
       fetchSuggestionsDebounced(inputValue.toLowerCase())
@@ -307,7 +308,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     <CompanyStats finalSearchValue={finalSearchValue}></CompanyStats>
     </div>
     <div  style={{...{ display:'flex',flexWrap: 'wrap'},...{ flexDirection: isSmallScreen ? 'column' : 'row'}}}>
-    {bestDeal ? <></> : <h3 style={{color:"black", textAlign:'center', width:'100%'}}>No best deals</h3>}
+    {/* {bestDeal ? <></> : <h3 style={{color:"black", textAlign:'center', width:'100%'}}>No best deals</h3>} */}
       {bestDeal && 
         <CustomCard
           bestDeal ={bestDeal}
