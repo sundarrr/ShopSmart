@@ -107,14 +107,6 @@ public class ProductController {
     public ResponseEntity<TreeMap<String, Integer>> getSystemUrlCount(@PathVariable String fooditem) {
     	List<Product> p = productService.getProductsByName(fooditem);
         TreeMap<String, Integer> result = productService.processUrls(p, fooditem);
-     //   System.out.println("Using KMP algorithm Key-Value Pairs: " + result);
-
-
-        for(int i=0;i<p.size();i++)
-        {
-           // System.out.println(p.get(i).productName+"   "+p.get(i).productSellingPrice);
-        }
-
         return new ResponseEntity<TreeMap<String, Integer>>(result, HttpStatus.OK);
     }
 

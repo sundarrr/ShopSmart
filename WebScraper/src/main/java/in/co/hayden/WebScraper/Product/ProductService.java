@@ -82,12 +82,8 @@ public class ProductService {
     }
 
     public Product incrementSearchCount(String name) {
-
-        System.out.println(name);
         Product temp = productRepository.findFirstByProductName(name);
         temp.setProductClickCount(temp.productClickCount + 1);
-        // PageRankAVLTree prs = new PageRankAVLTree();
-        // prs.updateClickCount(temp.productName,temp.productClickCount);
         return productRepository.save(temp);
     }
 
@@ -101,13 +97,10 @@ public class ProductService {
             }
             // KMP algorithm used to check if the substring is present in the URL
             if (PatternFindingKMPAlgorithm.search(url, "zehrs")) {
-                System.out.println("zehrs");
                 return "zehrs";
             } else if (PatternFindingKMPAlgorithm.search(url, "metro")) {
-                System.out.println("metro");
                 return "metro";
             } else if (PatternFindingKMPAlgorithm.search(url, "nofrills")) {
-                System.out.println("nofrills");
                 return "nofrills";
             } else {
                 return null; // Return null if the URL doesn't match any of the specified stores and product
@@ -120,7 +113,6 @@ public class ProductService {
     }
 
     public TreeMap<String, Integer> processUrls(List<Product> products, String productSearch) {
-        // System.out.println(productSearch);
         // TreeMap to store key-value pairs (String -> Integer)
 
         TreeMap<String, Integer> store = new TreeMap<>();
@@ -132,7 +124,6 @@ public class ProductService {
             // Extract the store name and product type (e.g., "eggs") from the URL
             String storeName = extractStoreName(p, productSearch.toLowerCase());
             if (storeName != null) {
-                // System.out.println(storeName);
                 store.put(storeName, store.getOrDefault(storeName, 0) + 1);
             }
         }
@@ -162,9 +153,6 @@ public class ProductService {
             product.setProductComparisonDetails(product.getProductComparisonDetails());
             bestDeal.insert(product);
         }
-        System.out.println("best deal is " + bestDeal.getBestDeal().getProductName() + " Selling Price ="
-                + bestDeal.getBestDeal().getProductSellingPrice() + " Comparison Details = "
-                + bestDeal.getBestDeal().getProductComparisonDetails());
         return bestDeal.getBestDeal();
     }
 

@@ -44,7 +44,6 @@ public class SearchCountService {
             // If the search term already exists, increment the search count
             SearchCount existingSearchCount = existingSearchCountOptional.get();
 
-            System.out.println(existingSearchCount);
             existingSearchCount.setSearchCount(existingSearchCount.getSearchCount() + 1);
             return searchCountRepository.save(existingSearchCount);
         } else {
@@ -108,10 +107,8 @@ public class SearchCountService {
 	    }
 //	    threshold set to top three values
 	    int n = 3;
-	    System.out.println();
 	    while (!priorityQueue.isEmpty() && n >0) {
 	        StringIntPair pair = priorityQueue.poll();
-//	        System.out.println(pair.key);
 	        stringList.add(pair.key);
 	        
 	        n-=1;

@@ -74,12 +74,6 @@ public class BestDealBST {
     private void inorder(BSTNode root) {
         if (root != null) {
             inorder(root.left);
-
-            // Print information for each product in the linked list
-            for (Product product : root.products) {
-                System.out.println(product.getProductName() + " - " + root.comparisonDetails);
-            }
-
             inorder(root.right);
         }
     }

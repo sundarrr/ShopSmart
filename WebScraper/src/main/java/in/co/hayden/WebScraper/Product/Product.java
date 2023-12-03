@@ -44,7 +44,6 @@ public class Product {
     public void setProductComparisonDetails(String productComparisonDetails) {
         double numericValue = extractNumericValue(productComparisonDetails);
         this.productComparisonDetails = String.valueOf(numericValue);
-        System.out.print(numericValue);
     }
 
 
