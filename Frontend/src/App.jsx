@@ -52,17 +52,19 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    let newIdx = filteredProducts.findIndex(product => product.productName === productName);
-    if(index != -1){
-      newIdx = index
-    }
-    const temp = [...filteredProducts];
-    temp[newIdx].productClickCount += 1;
-    temp.sort((a, b) => b.productClickCount - a.productClickCount);
+    // find the product in the original array
+    // if product is the best deal the index will be -1 so well increment the bestDeal product
     if(index == -1){
+      // increment the best deal product
       bestDeal.productClickCount += 1;
     }
-    setFilteredProducts(temp)
+    else{
+      const temp = [...filteredProducts];
+      temp[index].productClickCount += 1;
+      temp.sort((a, b) => b.productClickCount - a.productClickCount);
+  
+      setFilteredProducts(temp)
+    }
     // fetchData();
     
   } catch (error) {
