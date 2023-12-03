@@ -6,20 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PatternFindingKMPAlgorithm {
-
-    public static void main(String[] args) {
-        String text = "https://www.zehrs.com/products/example-product";
-        String pattern = "zehrs";
-
-        if (search(text, pattern)) {
-            System.out.println("Pattern found in the text");
-        } else {
-            System.out.println("Pattern not found in the text");
-        }
-    }
-
     public static boolean isValidUrl(String url) {
-        String urlRegex = "^(https?|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/[\\w.-]+\\?[^\\s]*\"[^\"]*\"[\\w\\-._~:/?#[@]!$&'()*+,;=]*$";
+         // Regex pattern for a valid URL
+         String urlRegex = "https://www\\.(zehrs|nofrills|metro)\\.ca/.*";
         Pattern pattern = Pattern.compile(urlRegex);
         Matcher matcher = pattern.matcher(url);
         return matcher.matches();
