@@ -9,6 +9,7 @@ const CompanyStats = ({finalSearchValue}) => {
     const fetchData = async () => {
       try {
         if(finalSearchValue == ""){
+          setData(null)
             return 
         }
         const response = await fetch(serverURL + 'counturl/' + finalSearchValue);
