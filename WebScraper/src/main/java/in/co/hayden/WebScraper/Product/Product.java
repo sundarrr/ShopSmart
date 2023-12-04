@@ -32,7 +32,7 @@ public class Product {
         this.productName = productName;
         this.productSellingPrice = productSellingPrice;
         this.productThumbnail = productThumbnail;
-        this.setProductComparisonDetails(productComparisonDetails); // Convert and set comparison details
+        this.productComparisonDetails=productComparisonDetails; // Convert and set comparison details
         this.productURL = productURL;
         this.productClickCount = 0;
     }
@@ -42,7 +42,8 @@ public class Product {
     public void setProductComparisonDetails(String productComparisonDetails) {
         try{
         double numericValue = extractNumericValue(productComparisonDetails);
-        this.productComparisonDetails = String.valueOf(numericValue);
+        System.out.println(productComparisonDetails);
+       // this.productComparisonDetails = String.valueOf(numericValue);
         }catch (NumberFormatException e) {
             System.err.println("Error parsing numeric value: " + e.getMessage());
         }
