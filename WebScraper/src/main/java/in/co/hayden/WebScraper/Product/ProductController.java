@@ -76,42 +76,65 @@ public class ProductController {
 
     @PostMapping("/insertdata")
     public ResponseEntity<Product> addProductsToDatabase(@RequestBody Product[] products) {
+        try{
         for (Product p : products) {
             productService.insertProduct(p);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }catch (Exception e) {
+        logException("Exception in addProductsToDatabase", e);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     }
 
     @PostMapping("/incrementproductclickcount")
     public ResponseEntity<Product> addProductsToDatabase(@RequestBody String productName) {
-        // for(Product p: products)
-        // {
-        // productService.insertProduct(p);
-        // }
+        try{
         productService.incrementSearchCount(productName);
         return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e) {
+            logException("Exception in incrementproductclickcount", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/getBestDeal/{input}")
-    public ResponseEntity<Product> getBestDeal(@PathVariable String input) {    
+    public ResponseEntity<Product> getBestDeal(@PathVariable String input) {
+        try{    
         return new ResponseEntity<Product>(productService.getBestDeal(productService.getProductsByName(input)),HttpStatus.OK);
+        }catch (Exception e) {
+            logException("Exception in getBestDeal", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/")
     public ResponseEntity<List<Product>> getAllProducts() {
+        try{
         //Page Ranks the products that are displayed in the home page
         return new ResponseEntity<List<Product>>(productService.pageRank(productService.allProduct()), HttpStatus.OK);
+        }catch (Exception e) {
+            logException("Exception in getAllProducts", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/counturl/{fooditem}")
     public ResponseEntity<TreeMap<String, Integer>> getSystemUrlCount(@PathVariable String fooditem) {
+        try{
     	List<Product> p = productService.getProductsByName(fooditem);
         TreeMap<String, Integer> result = productService.processUrls(p, fooditem);
         return new ResponseEntity<TreeMap<String, Integer>>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            logException("Exception in getSystemUrlCount", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/getSearchSuggestions/{input}")
     public ResponseEntity<List<String>> getSearchSuggestions(@PathVariable String input) {
+        try{
         String filePath = "food_dictionary.txt";
         List<String> words = searchCountService.readFoodItemsFromFile(filePath);
         Trie t = new Trie();
@@ -124,11 +147,25 @@ public class ProductController {
         }
 
         return new ResponseEntity<List<String>>(outputList, HttpStatus.OK);
+    }catch (Exception e) {
+        logException("Exception in getSearchSuggestions", e);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
 
     @GetMapping("/getProductsByName/{input}")
     public ResponseEntity<List<Product>> getProductsByName(@PathVariable String input) {
+        try{
        //Page Ranks the products that are searched by the user
         return new ResponseEntity<List<Product>>(productService.pageRank(productService.getProductsByName(input)), HttpStatus.OK);
+        }catch (Exception e) {
+            logException("Exception in getProductsByName", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void logException(String message, Exception e) {
+        System.err.println(message);
+        e.printStackTrace();
     }
 }

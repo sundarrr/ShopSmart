@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @Data
@@ -42,8 +40,12 @@ public class Product {
 
     // Updated method to set comparison details as a double value
     public void setProductComparisonDetails(String productComparisonDetails) {
+        try{
         double numericValue = extractNumericValue(productComparisonDetails);
         this.productComparisonDetails = String.valueOf(numericValue);
+        }catch (NumberFormatException e) {
+            System.err.println("Error parsing numeric value: " + e.getMessage());
+        }
     }
 
 
@@ -57,6 +59,7 @@ public class Product {
         double numericValue = 0.0;
 
         if (matcher.find()) {
+            try{
             double value = Double.parseDouble(matcher.group(1));
             double divisor = matcher.group(2) != null ? Double.parseDouble(matcher.group(2)) : 1.0;
             String unit = matcher.group(3);
@@ -81,6 +84,9 @@ public class Product {
             } else {
                 numericValue = value / divisor; // Use as is if no unit
             }
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing numeric value: " + e.getMessage());
+        }
         }
 
         return numericValue;

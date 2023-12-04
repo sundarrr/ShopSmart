@@ -3,16 +3,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 public class PageRankAVLTree {
 
     private Node root;
 
     public void insert(Product product) {
+        try{
         root = insert(root, product);
+        }catch (Exception e) {
+            System.err.println("Exception occurred during insertion: " + e.getMessage());
+        }
     }
 
     public List<Product> getPageRank() {
@@ -29,7 +29,7 @@ public class PageRankAVLTree {
         if (node == null) {
             return new Node(product);
         }
-
+        try{
         int compareResult = Integer.compare(product.getProductClickCount(), node.getProduct().getProductClickCount());
 
         if (compareResult < 0) {
@@ -43,6 +43,10 @@ public class PageRankAVLTree {
         updateHeightAndBalance(node);
 
         return balance(node);
+    }catch (Exception e) {
+        System.err.println("Exception occurred during insertion: " + e.getMessage());
+        throw e;
+    }
     }
 
     private List<Product> reverseList(List<Product> list) {

@@ -18,10 +18,7 @@ class BSTNode {
         try {
             return Double.parseDouble(comparisonDetails);
         } catch (NumberFormatException e) {
-            // Handle the case where the comparison details cannot be parsed as a double
-            // You can provide a default value or throw an exception based on your
-            // requirements
-            return 0.0; // Default value
+            return 0.0; 
         }
     }
 
@@ -35,14 +32,18 @@ public class BestDealBST {
     }
 
     public void insert(Product product) {
-        root = insert(root, product);
+        try {
+            root = insert(root, product);
+        } catch (Exception e) {
+            System.err.println("Exception occurred during insertion: " + e.getMessage());
+        }
     }
 
     private BSTNode insert(BSTNode node, Product product) {
         if (node == null) {
             return new BSTNode(product);
         }
-
+        try{
         double productValue = convertComparisonDetails(product.getProductComparisonDetails());
         if (productValue == node.comparisonDetails) {
             // Same comparison details, add to the linked list in the node
@@ -52,7 +53,9 @@ public class BestDealBST {
         } else {
             node.right = insert(node.right, product);
         }
-
+    }catch (Exception e) {
+        System.err.println("Exception occurred during insertion: " + e.getMessage());
+    }
         return node;
     }
 
@@ -60,10 +63,7 @@ public class BestDealBST {
         try {
             return Double.parseDouble(comparisonDetails);
         } catch (NumberFormatException e) {
-            // Handle the case where the comparison details cannot be parsed as a double
-            // You can provide a default value or throw an exception based on your
-            // requirements
-            return 0.0; // Default value
+            return 0.0; 
         }
     }
 
@@ -96,9 +96,6 @@ public class BestDealBST {
     public void clear() {
         root = null;
     }
-
-    // Other BST operations can be added as needed
-
     public static void main(String[] args) {
     }
 }

@@ -32,7 +32,7 @@ function App() {
       const data = await response.json();
       setFilteredProducts(data);
     } catch (error) {
-
+      console.error('Error fetching filtered products:', error.message);
     }
   };
 
@@ -175,7 +175,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
       setSuggestions(data);
 
     } catch (error) {
-
+      console.error('Error fetching search suggestions:', error.message);
     }
   };
 
@@ -196,7 +196,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
     } catch (error) {
       setbestDeal(false);
-
+      console.error('Error fetching best deal:', error.message);
     }
   };
 

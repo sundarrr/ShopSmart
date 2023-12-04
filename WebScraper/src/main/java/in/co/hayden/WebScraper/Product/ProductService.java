@@ -63,8 +63,13 @@ public class ProductService {
     }
 
     public Product insertProduct(Product p) {
-        productRepository.insert(p);
-        return p;
+        try{
+            productRepository.insert(p);
+            return p;
+        }catch (Exception e) {
+            System.out.println("Exception occurred while inserting product: {}"+e.getMessage());
+            return null;
+        } 
     }
 
     public Optional<Product> findbyname(String name) {
@@ -76,15 +81,25 @@ public class ProductService {
     }
 
     public Product updateProductName(String name, String newName) {
+        try{
         Product temp = productRepository.findProductByProductName(name).get();
         temp.setProductName(newName);
         return productRepository.save(temp);
+        }catch (Exception e) {
+            System.err.println("Exception occurred while updating product name: {}"+ e.getMessage());
+            return null;
+        }
     }
 
     public Product incrementSearchCount(String name) {
+        try{
         Product temp = productRepository.findFirstByProductName(name);
         temp.setProductClickCount(temp.productClickCount + 1);
         return productRepository.save(temp);
+        }catch (Exception e) {
+            System.err.println("Exception occurred while incrementing search count: {}"+ e.getMessage());
+            return null;
+        }
     }
 
     // Method to extract the store name from the URL
@@ -107,7 +122,7 @@ public class ProductService {
             }
         } catch (Exception e) {
             // Handle the exception, e.g., log it or print an error message
-            System.err.println("Exception: " + e.getMessage());
+            System.err.println("Exception occurred while extracting store name: " + e.getMessage());
             return null;
         }
     }

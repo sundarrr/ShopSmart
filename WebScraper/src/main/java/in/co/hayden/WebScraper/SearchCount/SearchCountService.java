@@ -18,15 +18,25 @@ public class SearchCountService {
 
 
     public SearchCount insertSearchTerm(String searchTerm){
+        try{
             SearchCount newSearchCount = new SearchCount();
             newSearchCount.setSearchTerm(searchTerm);
             newSearchCount.setSearchCount(0);
             return searchCountRepository.insert(newSearchCount);
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to insert search term");
+        }
     }
 
     public List<SearchCount> allSearchCounts(){
+        try{
         List<SearchCount> searchCounts = searchCountRepository.findAll();
         return searchCountRepository.findAll();
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve all search counts");
+        }
     }
 
     public List<SearchCount> topSearch()

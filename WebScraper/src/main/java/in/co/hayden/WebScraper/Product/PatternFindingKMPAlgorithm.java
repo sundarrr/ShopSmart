@@ -1,17 +1,21 @@
 package in.co.hayden.WebScraper.Product;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class PatternFindingKMPAlgorithm {
     public static boolean isValidUrl(String url) {
          // Regex pattern for a valid URL
          String urlRegex = "https://www\\.(zehrs|nofrills|metro)\\.ca/.*";
+         try{
         Pattern pattern = Pattern.compile(urlRegex);
         Matcher matcher = pattern.matcher(url);
         return matcher.matches();
+         }catch (PatternSyntaxException e) {
+            System.err.println("Invalid regex pattern: " + e.getMessage());
+            return false;
+        }
+
     }
     
 
@@ -20,7 +24,7 @@ public class PatternFindingKMPAlgorithm {
         int[] lps = new int[m];
         int len = 0;
         int i = 1;
-
+        try{
         while (i < m) {
             if (pattern.charAt(i) == pattern.charAt(len)) {
                 len++;
@@ -37,6 +41,12 @@ public class PatternFindingKMPAlgorithm {
         }
 
         return lps;
+    }catch (Exception e) {
+        System.err.println("Exception occurred in computeLPSArray: " + e.getMessage());
+    }
+
+    return lps;
+
     }
 
     public static boolean search(String text, String pattern) {
@@ -53,7 +63,7 @@ public class PatternFindingKMPAlgorithm {
             }
 
             if (j == m) {
-                return true;  // Pattern found in the text
+                return true; 
             } else if (i < n && pattern.charAt(j) != text.charAt(i)) {
                 if (j != 0) {
                     j = lps[j - 1];
@@ -63,6 +73,6 @@ public class PatternFindingKMPAlgorithm {
             }
         }
 
-        return false;  // Pattern not found in the text
+        return false; 
     }
 }

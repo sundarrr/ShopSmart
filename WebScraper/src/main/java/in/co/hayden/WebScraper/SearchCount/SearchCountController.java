@@ -22,31 +22,52 @@ public class SearchCountController {
 
     @GetMapping("/allSearchCounts")
     public ResponseEntity<List<SearchCount>> allSearchCounts() {
+        try{
         return new ResponseEntity<List<SearchCount>>(searchCountService.topSearch(), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @PostMapping("/searchCount")
     public ResponseEntity<SearchCount> incrementSearchCount(@RequestBody String searchTerm) {
+        try{
         String searchTermWithoutQuotes = searchTerm.replace("\"", "");
         if(! searchCountService.isSearchCountPresent(searchTerm)){
             newSearchTerms.add(searchTerm);
         }
             searchCountService.insertSearchCount(searchTermWithoutQuotes);
         return new ResponseEntity<>(HttpStatus.OK);
+    }catch (Exception e) {
+        e.printStackTrace();
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     }
 
     @GetMapping("/newSearchTerms")
     public ResponseEntity<ArrayList<String>> newSearchTerms() {
+        try{
         return new ResponseEntity<>(newSearchTerms, HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/clearNewSearchTerms")
     public ResponseEntity<ArrayList<String>> clearNewSearchTerms() {
+        try{
         newSearchTerms = new ArrayList<>();
         return new ResponseEntity<>( HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/topSearchTerms")
     public ResponseEntity<List<SearchCount>> incrementSearchCount() {
+        try{
         // Fetch all search counts from the database
         List<SearchCount> allSearchCounts = searchCountService.topSearch();
 
@@ -61,19 +82,25 @@ public class SearchCountController {
             topSearchTerms.add(maxHeap.poll());
             count++;
         }
-
 //        return topSearchTerms;
         return new ResponseEntity<>(topSearchTerms, HttpStatus.OK);
-
+    }catch (Exception e) {
+        e.printStackTrace();
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     }
     
     @GetMapping("/wordchecker/{input}")
     public ResponseEntity<List<String>> wordChecker(@PathVariable String input){
+        try{
     	String filePath="food_dictionary.txt";
     	List<String> words = searchCountService.readFoodItemsFromFile(filePath);
     	List<String> stringList=searchCountService.sortpairs(input.toLowerCase(),words);
 		return new ResponseEntity<>(stringList,HttpStatus.OK);
-    	
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }	
     }
     
     }
