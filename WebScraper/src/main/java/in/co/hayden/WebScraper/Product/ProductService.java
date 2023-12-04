@@ -165,7 +165,7 @@ public class ProductService {
         BestDealBST bestDeal = new BestDealBST();
         // Convert comparison details to double and update click count
         for (Product product : productList) {
-            product.setProductComparisonDetails(product.getProductComparisonDetails());
+//            product.setProductComparisonDetails(product.getUpdatedProductComparisonDetails());
             bestDeal.insert(product);
         }
         return bestDeal.getBestDeal();

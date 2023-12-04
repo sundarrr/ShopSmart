@@ -25,6 +25,7 @@ public class Product {
     String productSellingPrice;
     String productThumbnail;
     String productComparisonDetails;
+    String updatedProductComparisonDetails;
     String productURL;
     int productClickCount;
 
@@ -35,6 +36,8 @@ public class Product {
         this.productComparisonDetails=productComparisonDetails; // Convert and set comparison details
         this.productURL = productURL;
         this.productClickCount = 0;
+        setProductComparisonDetails(productComparisonDetails);
+
     }
     private static final String NUMERIC_PATTERN = "\\d+(\\.\\d+)?";
 
@@ -42,8 +45,8 @@ public class Product {
     public void setProductComparisonDetails(String productComparisonDetails) {
         try{
         double numericValue = extractNumericValue(productComparisonDetails);
-        System.out.println(productComparisonDetails);
-       // this.productComparisonDetails = String.valueOf(numericValue);
+//        System.out.println(productComparisonDetails);
+        this.updatedProductComparisonDetails = String.valueOf(numericValue);
         }catch (NumberFormatException e) {
             System.err.println("Error parsing numeric value: " + e.getMessage());
         }

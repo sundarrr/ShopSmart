@@ -10,7 +10,7 @@ class BSTNode {
     public BSTNode(Product product) {
         this.products = new LinkedList<>();
         this.products.add(product);
-        this.comparisonDetails = convertComparisonDetails(product.getProductComparisonDetails());
+        this.comparisonDetails = (double) convertComparisonDetails(product.getUpdatedProductComparisonDetails());
         this.left = this.right = null;
     }
 
@@ -35,7 +35,7 @@ public class BestDealBST {
         try {
             root = insert(root, product);
         } catch (Exception e) {
-            System.err.println("Exception occurred during insertion: " + e.getMessage());
+//            System.err.println("Exception occurred during insertion: " + e.getMessage());
         }
     }
 
