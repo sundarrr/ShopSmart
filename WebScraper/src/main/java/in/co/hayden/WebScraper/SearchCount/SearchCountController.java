@@ -26,7 +26,7 @@ public class SearchCountController {
         return new ResponseEntity<List<SearchCount>>(searchCountService.topSearch(), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
     @PostMapping("/searchCount")
@@ -40,7 +40,7 @@ public class SearchCountController {
         return new ResponseEntity<>(HttpStatus.OK);
     }catch (Exception e) {
         e.printStackTrace();
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     }
 
@@ -50,7 +50,7 @@ public class SearchCountController {
         return new ResponseEntity<>(newSearchTerms, HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
@@ -61,7 +61,7 @@ public class SearchCountController {
         return new ResponseEntity<>( HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
@@ -86,7 +86,7 @@ public class SearchCountController {
         return new ResponseEntity<>(topSearchTerms, HttpStatus.OK);
     }catch (Exception e) {
         e.printStackTrace();
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     }
     
@@ -99,7 +99,7 @@ public class SearchCountController {
 		return new ResponseEntity<>(stringList,HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }	
     }
     

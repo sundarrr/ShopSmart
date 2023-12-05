@@ -80,10 +80,10 @@ public class ProductController {
         for (Product p : products) {
             productService.insertProduct(p);
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }catch (Exception e) {
         logException("Exception in addProductsToDatabase", e);
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     }
 
@@ -94,7 +94,7 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e) {
             logException("Exception in incrementproductclickcount", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
@@ -104,7 +104,7 @@ public class ProductController {
         return new ResponseEntity<Product>(productService.getBestDeal(productService.getProductsByName(input)),HttpStatus.OK);
         }catch (Exception e) {
             logException("Exception in getBestDeal", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
@@ -115,7 +115,7 @@ public class ProductController {
         return new ResponseEntity<List<Product>>(productService.pageRank(productService.allProduct()), HttpStatus.OK);
         }catch (Exception e) {
             logException("Exception in getAllProducts", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
@@ -128,7 +128,7 @@ public class ProductController {
         }
         catch (Exception e) {
             logException("Exception in getSystemUrlCount", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
@@ -149,7 +149,7 @@ public class ProductController {
         return new ResponseEntity<List<String>>(outputList, HttpStatus.OK);
     }catch (Exception e) {
         logException("Exception in getSearchSuggestions", e);
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 
@@ -160,7 +160,7 @@ public class ProductController {
         return new ResponseEntity<List<Product>>(productService.pageRank(productService.getProductsByName(input)), HttpStatus.OK);
         }catch (Exception e) {
             logException("Exception in getProductsByName", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
