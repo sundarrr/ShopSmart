@@ -57,6 +57,7 @@ const incrementProductClickCount = async (index, productName, productURL) => {
     if(index == -1){
       // increment the best deal product
       bestDeal.productClickCount += 1;
+      setbestDeal(bestDeal)
     }
     else{
       const temp = [...filteredProducts];
