@@ -54,7 +54,7 @@ public class BestDealBST {
             node.right = insert(node.right, product);
         }
     }catch (Exception e) {
-        System.err.println("Exception occurred during insertion: " + e.getMessage());
+//        System.err.println("Exception occurred during insertion test: " + e.getMessage());
     }
         return node;
     }

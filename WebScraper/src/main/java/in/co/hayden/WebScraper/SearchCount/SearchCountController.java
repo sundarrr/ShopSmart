@@ -33,8 +33,8 @@ public class SearchCountController {
     public ResponseEntity<SearchCount> incrementSearchCount(@RequestBody String searchTerm) {
         try{
         String searchTermWithoutQuotes = searchTerm.replace("\"", "");
-        if(! searchCountService.isSearchCountPresent(searchTerm)){
-            newSearchTerms.add(searchTerm);
+        if(! searchCountService.isSearchCountPresent(searchTermWithoutQuotes)){
+            newSearchTerms.add(searchTermWithoutQuotes);
         }
             searchCountService.insertSearchCount(searchTermWithoutQuotes);
         return new ResponseEntity<>(HttpStatus.OK);
