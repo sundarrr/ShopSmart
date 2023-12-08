@@ -80,7 +80,7 @@ public class ProductController {
         for (Product p : products) {
             productService.insertProduct(p);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Product>(HttpStatus.OK);
     }catch (Exception e) {
         logException("Exception in addProductsToDatabase", e);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -91,7 +91,7 @@ public class ProductController {
     public ResponseEntity<Product> addProductsToDatabase(@RequestBody String productName) {
         try{
         productService.incrementSearchCount(productName);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<Product>(HttpStatus.OK);
         }catch (Exception e) {
             logException("Exception in incrementproductclickcount", e);
             return new ResponseEntity<>(HttpStatus.OK);

@@ -68,7 +68,7 @@ public class ProductService {
             return p;
         }catch (Exception e) {
             System.out.println("Exception occurred while inserting product: {}"+e.getMessage());
-            return null;
+            return p;
         } 
     }
 
