@@ -92,7 +92,8 @@ const incrementProductClickCount = async (index, productName, productURL) => {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    window.open("http://localhost:8080/login", "_blank")
   }, []);
 
 
