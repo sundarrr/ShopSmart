@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 
 import CustomCard from './components/CustomCard'
+import SignupLogin from './components/SignupLogin'
 import './App.css'
 import _ from 'lodash';
-
-
+import {BrowserRouter,Routes,Route,} from "react-router-dom";
+import Forum from './components/SignupLogin';
 import {serverURL} from './constants'
 import CustomChip from './components/CustomChip';
 import CompanyStats from './components/CompanyStats'
@@ -238,6 +239,18 @@ const incrementProductClickCount = async (index, productName, productURL) => {
 
   return (
     <>
+     <BrowserRouter>
+      <Routes>
+        <Route path="/SignupLogin" element={<SignupLogin/>} />
+      </Routes>
+    </BrowserRouter>
+    <div id="nav">
+		<ul>
+	  <li>
+		  <a href="../SignupLogin">FORUM</a>
+	  </li>
+  </ul>
+</div>
   <div
       style={{
         display: 'flex',
