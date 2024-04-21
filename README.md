@@ -72,10 +72,6 @@ Users are presented with comprehensive comparisons of deals, allowing them to ev
 
 Smart Shop is poised to change the way users approach grocery shopping, providing them with the tools and insights they need to make smart purchasing decisions and maximize savings.
 
-## Screenshots
-
-<img src="./screenshots/1.png" width="60%" /> <br>
-
 ## Demo
 
 [![DEMO](https://img.youtube.com/vi/wBxCHenE2Vw/0.jpg)](https://www.youtube.com/watch?v=wBxCHenE2Vw)
