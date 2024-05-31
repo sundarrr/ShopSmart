@@ -78,7 +78,7 @@ Smart Shop is poised to change the way users approach grocery shopping, providin
 
 ## Webscraper
 
-[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/haydencordeiro/ShopSmartScraper)
+[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sundarrr/ShopSmartScraper)
 
 
    
